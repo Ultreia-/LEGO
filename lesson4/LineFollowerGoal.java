@@ -21,43 +21,42 @@ public class LineFollowerGoal
 public static void main (String[] aArg)
   throws Exception
   {
-     final int power = 80;
-	  
-     ThreeColorSensor sensor = new ThreeColorSensor(SensorPort.S3);
+	final int power = 80;
 	 
-     sensor.calibrate();
+	ThreeColorSensor sensor = new ThreeColorSensor(SensorPort.S3);
+	
+	sensor.calibrate();
+	
+	LCD.clear();
+	LCD.drawString("Light: ", 0, 2); 
+	
+	while (! Button.ESCAPE.isDown())
+	{
+		LCD.drawInt(sensor.light(),4,10,2);
+		LCD.refresh();
+		 
+		if (sensor.green() && greenMeasurement > 10) {
+			Car.stop();
+		}		 
+		else if(sensor.green()) {
+			greenMeasurement += 1;
+		}
+		else if ( sensor.black() ){
+			Car.forward(power, 0);
+		 	greenMeasurement = 0;
+		}
+		else {
+			Car.forward(0, power);
+		 	greenMeasurement = 0;
+		}
+		
+		 
+		Thread.sleep(10);
+	}
 	 
-     LCD.clear();
-     LCD.drawString("Light: ", 0, 2); 
-	 
-     while (! Button.ESCAPE.isDown())
-     {
-
-	     LCD.drawInt(sensor.light(),4,10,2);
-	     LCD.refresh();
-	     
-	     if (sensor.green() && greenMeasurement > 10) {
-	    	 Car.stop();
-	     }	     
-	     else if(sensor.green()) {
-	    	 greenMeasurement += 1;
-	     }
-	     else if ( sensor.black() ){
-	        Car.forward(power, 0);
-	     	greenMeasurement = 0;
-	     }
-	     else {
-	        Car.forward(0, power);
-	     	greenMeasurement = 0;
-	     }
-	    
-	     
-	     Thread.sleep(10);
-     }
-     
-     Car.stop();
-     LCD.clear();
-     LCD.drawString("Program stopped", 0, 0);
-     LCD.refresh();
-   }
+	Car.stop();
+	LCD.clear();
+	LCD.drawString("Program stopped", 0, 0);
+	LCD.refresh();
+	}
 }
