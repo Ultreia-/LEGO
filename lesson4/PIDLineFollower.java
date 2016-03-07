@@ -18,11 +18,14 @@ import lesson2.Car;
  */
 public class PIDLineFollower
 {
-	private static int preError, error, reading, adjustedPower, thresholdForTurning, integral, turn;
-	private static double kp = 1.0;
-	private static double ki = 0.1;
-    private static int power = 50;
-    private static int minPower = 70, maxPower = 100;
+	private static int preError = 0, error, reading, adjustedPower, 
+			thresholdForTurning, turn, derivative = 0, integral = 0;
+	private static double pc = 0.625;
+	private static double kp = 0.9;
+	private static double dt = 0.013;
+	private static double ki = (kp * 1.0 * dt)/pc;
+	private static double kd = (kp*pc)/(8*0.013);
+    private static int power = 90;
     private static int sampleInterval = 10;
 	
   public static void main (String[] aArg)
@@ -49,27 +52,14 @@ public class PIDLineFollower
 	            error = reading - thresholdForTurning;
 	            
 	            integral += error;
+	            derivative = error - preError;
 	            
-	            turn = (int)(kp * error) + (int)(ki*integral);
+	            turn = (int)(kp * error) + (int)(ki * integral) + (int)(kd * derivative);
 
-                if ( error > 0 )
-                { 
-                	//on white
-                    //power = Math.min(minPower + power, maxPower);
+              
                     Car.forward(power+turn,power-turn);
-                }
-                else 
-                {
-                	//on black
-                    //power = Math.min(minPower + Math.abs(power), maxPower);
-                    Car.forward(power-turn, power+turn);		    	 
-                }
-
-                if(preError > 0 && error <= 0) integral = 0;
-                if(preError < 0 && error >= 0) integral = 0;
-                
+                              
                 preError = error;
-                
                 Delay.msDelay(sampleInterval);
 		
 	        }
