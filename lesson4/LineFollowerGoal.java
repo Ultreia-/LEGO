@@ -49,7 +49,6 @@ public static void main (String[] aArg)
 			Car.forward(0, power);
 		 	greenMeasurement = 0;
 		}
-		
 		 
 		Thread.sleep(10);
 	}
