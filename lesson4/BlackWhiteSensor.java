@@ -67,4 +67,7 @@ public class BlackWhiteSensor {
  	   return ls.readValue();
    }
    
+   public int getThreshold() {
+	   return blackWhiteThreshold;
+   }
 }
