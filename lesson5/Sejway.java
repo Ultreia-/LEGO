@@ -1,6 +1,7 @@
-package lesson5;
-
 import lejos.nxt.*;
+import lejos.nxt.comm.*;
+import java.io.*;
+
 
 /**
  * A controller for a self-balancing Lego robot with a light sensor
@@ -18,10 +19,16 @@ public class Sejway
 {
 
     // PID constants
-    final int KP = 28;
-    final int KI = 4;
-    final int KD = 33;
-    final int SCALE = 18;
+    int KP = 28;
+    int KI = 4;
+    int KD = 33;
+    int SCALE = 18;
+
+
+    // For connection
+    private BTConnection btc;
+    private DataInputStream dis;
+    private DataOutputStream dos;
 
     // Global vars:
     int offset;
@@ -33,6 +40,12 @@ public class Sejway
     public Sejway() 
     {
         ls = new LightSensor(SensorPort.S2, true);
+
+
+        //start bluettoth connection to pc
+        dis = btc.openDataInputStream();
+        dos = btc.openDataOutputStream();
+        
     }
 	
     public void getBalancePos() 
@@ -45,6 +58,7 @@ public class Sejway
         LCD.clear();
         LCD.drawInt(offset, 2, 4);
         LCD.refresh();
+        refresh();
         }
     }
 	
@@ -52,6 +66,7 @@ public class Sejway
     {
         while (!Button.ESCAPE.isDown()) 
         {
+            refresh();
             int normVal = ls.readNormalizedValue();
 
             // Proportional Error:
@@ -103,4 +118,30 @@ public class Sejway
         sej.pidControl();
         sej.shutDown();
     }
+
+
+    public void refresh() {
+
+
+    try 
+    {
+        KP = dis.readInt();
+        LCD.drawInt(KP,7,0,1);
+        LCD.refresh();
+        KI = dis.readInt();
+        LCD.drawInt(KI,7,0,2);
+        LCD.refresh();
+        KD = dis.readInt();
+        LCD.drawInt(KD,7,0,2);
+        LCD.refresh();
+        //offset = offset + dis.readInt();
+        //LCD.drawInt(offset,7,0,2);
+        //LCD.refresh();
+        dos.flush();
+        }
+        catch (Exception e)
+        {}
+
+    }
+
 }
