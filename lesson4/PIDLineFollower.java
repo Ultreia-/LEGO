@@ -33,9 +33,9 @@ public class PIDLineFollower
   {
      BlackWhiteSensor sensor = new BlackWhiteSensor(SensorPort.S3);
 	 
-     //sensor.calibrate();
+     sensor.calibrate();
      
-     thresholdForTurning = 47;//sensor.getThreshold();
+     thresholdForTurning = sensor.getThreshold(); //approx. 47
 	 
      LCD.clear();
      LCD.drawString("Light: ", 0, 2); 
