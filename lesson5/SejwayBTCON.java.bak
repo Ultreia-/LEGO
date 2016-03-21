@@ -2,6 +2,7 @@ import lejos.nxt.*;
 import lejos.nxt.comm.*;
 import java.io.*;
 
+
 /**
  * A controller for a self-balancing Lego robot with a light sensor
  * on port 2. The two motors should be connected to port B and C.
@@ -14,14 +15,24 @@ import java.io.*;
  */
 
 
-public class SejwayBTCON 
+public class SejwayBTCON
 {
 
     // PID constants
-    private double KP = 28;
-    private double KI = 4;
-    private double KD = 33;
-    private int SCALE = 18;
+    int KP = 28;
+    int KI = 4;
+    int KD = 33;
+    int SCALE = 18;
+
+
+    // For connection
+    private BTConnection btc;
+    private DataInputStream dis;
+    private DataOutputStream dos;
+
+    private String connected    = "Connected";
+    private String waiting      = "Waiting...";
+    private String closing      = "Closing...";
 
     // Global vars:
     int offset;
@@ -30,29 +41,15 @@ public class SejwayBTCON
 	
     LightSensor ls;
 	
-    private String connected    = "Connected";
-    private String waiting      = "Waiting...";
-    private String closing      = "Closing...";
-
-    private int steps = 0;
-
-    private BTConnection btc;
-    private DataInputStream dis;
-    private DataOutputStream dos;
-
     public SejwayBTCON() 
     {
         ls = new LightSensor(SensorPort.S2, true);
-        
-        LCD.drawString(waiting,0,0);
 
         btc = Bluetooth.waitForConnection();
-
-        LCD.clear();
-        LCD.drawString(connected,0,0);
-
+        //start bluettoth connection to pc
         dis = btc.openDataInputStream();
         dos = btc.openDataOutputStream();
+        
     }
 	
     public void getBalancePos() 
@@ -60,29 +57,19 @@ public class SejwayBTCON
         // Wait for user to balance and press orange button
         while (!Button.ENTER.isDown())
         {
-
-            calibrate();
-           
+            // NXTway must be balanced.
+            offset = ls.readNormalizedValue();
+            LCD.clear();
+            LCD.drawInt(offset, 2, 4);
+            LCD.refresh();
         }
-    }
-
-    private void calibrate() {
-
-        // NXTway must be balanced.
-        offset = ls.readNormalizedValue();
-        LCD.clear();
-        LCD.drawInt(offset, 2, 4);
-        LCD.refresh();
-
-
-
     }
 	
     public void pidControl() 
     {
         while (!Button.ESCAPE.isDown()) 
         {
-            
+            refresh();
             int normVal = ls.readNormalizedValue();
 
             // Proportional Error:
@@ -116,17 +103,7 @@ public class SejwayBTCON
                 MotorPort.B.controlMotor(power, BasicMotorPort.BACKWARD);
                 MotorPort.C.controlMotor(power, BasicMotorPort.BACKWARD);
             }
-
-            if(Button.LEFT.isDown()) refresh();
-            // if(steps == 10000) break;
-            // steps++;
-
         }
-
-        Motor.B.stop();
-        Motor.C.stop();
-
-
     }
 	
     public void shutDown()
@@ -145,36 +122,28 @@ public class SejwayBTCON
         sej.shutDown();
     }
 
-    public void refresh()
+
+    public void refresh() {
+
+    try 
     {
-        try 
-        {
-        
-            Motor.B.flt();
-            Motor.C.flt();
-
-            LCD.drawString("Waiting for GO",0,0);
-
-            calibrate();
-
-            KP = dis.readInt();
-            LCD.clear();
-            LCD.drawInt((int)KP,7,0,1);
-            LCD.refresh();
-            KI = dis.readInt();
-            LCD.drawInt((int)KI,7,0,2);
-            LCD.refresh();
-            KD = dis.readInt();
-            LCD.drawInt((int)KD,7,0,3);
-            LCD.refresh();
-            //offset = offset + dis.readInt();
-            //LCD.drawInt(offset,7,0,2);
-            //LCD.refresh();
-            //dos.flush();
-
-
+        KP = dis.readInt();
+        LCD.drawInt(KP,7,0,1);
+        LCD.refresh();
+        KI = dis.readInt();
+        LCD.drawInt(KI,7,0,2);
+        LCD.refresh();
+        KD = dis.readInt();
+        LCD.drawInt(KD,7,0,2);
+        LCD.refresh();
+        //offset = offset + dis.readInt();
+        //LCD.drawInt(offset,7,0,2);
+        //LCD.refresh();
+        dos.flush();
         }
         catch (Exception e)
         {}
+
     }
+
 }

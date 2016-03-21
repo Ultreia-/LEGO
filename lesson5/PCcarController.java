@@ -26,12 +26,12 @@ public class PCcarController extends JFrame implements ActionListener
    private TextField addressField = new TextField(20);
 
    private String name = "Carpet"; 
-   private String address = "00165312357E";
+   private String address = "00165317F1D0";
    
    private TextField pfield = new TextField(10);
    private TextField ifield = new TextField(10);
    private TextField dfield = new TextField(10);
-   private TextField offsetfield = new TextField(10);
+   // private TextField offsetfield = new TextField(10);
    
    
    
@@ -90,16 +90,16 @@ public class PCcarController extends JFrame implements ActionListener
       p3.add(new JLabel("D:"));
       p3.add(dfield);
       
-      JPanel p5 = new JPanel();  
-      p5.add(new JLabel("Offset:"));
-      p5.add(offsetfield);
+      // JPanel p5 = new JPanel();  
+      // p5.add(new JLabel("Offset:"));
+      // p5.add(offsetfield);
 
 
 
       pfield.setText("28");
       ifield.setText("4");
       dfield.setText("33");
-      offsetfield.setText("0");
+      // offsetfield.setText("0");
       
       // holds go button
       JPanel p4 = new JPanel();
@@ -114,7 +114,7 @@ public class PCcarController extends JFrame implements ActionListener
       panel.add(p2);
       panel.add(p3);
       panel.add(p4);
-      panel.add(p5);
+      // panel.add(p5);
       add(panel,BorderLayout.NORTH);
 
    }
@@ -161,10 +161,10 @@ public class PCcarController extends JFrame implements ActionListener
           dos.writeInt(dvalue);
           dos.flush();
           
-          String offsetstring = offsetfield.getText();
-          int offsetvalue = new Integer(offsetstring).intValue();        
-            dos.writeInt(offsetvalue);
-            dos.flush();
+          // String offsetstring = offsetfield.getText();
+          // int offsetvalue = new Integer(offsetstring).intValue();        
+            // dos.writeInt(offsetvalue);
+            // dos.flush();
              }
          catch (Exception ex) {
          }           

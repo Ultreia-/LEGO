@@ -21,13 +21,13 @@ public class Car
     private Car()
     {	   
     } 
-   
-    public static void stop() 
+    
+    public static void stop()
     {
 	    leftMotor.controlMotor(0,stop);
 	    rightMotor.controlMotor(0,stop);
     }
-   
+    
     public static void forward(int leftPower, int rightPower)
     {
 	    leftMotor.controlMotor(leftPower,forward);
