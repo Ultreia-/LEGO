@@ -18,9 +18,9 @@ import java.io.*;
  */
 public class BTcontrolledCar implements ButtonListener
 {
-    private String connected    = "Connected";
-    private String waiting      = "Waiting...";
-    private String closing      = "Closing...";
+    private String connected = "Connected";
+    private String waiting = "Waiting...";
+    private String closing = "Closing...";
 
     private BTConnection btc;
     private DataInputStream dis;
@@ -54,7 +54,7 @@ public class BTcontrolledCar implements ButtonListener
                 Car.forward(power, power);
                 Thread.sleep(dur);
                 Car.stop();
-                // dos.writeInt(Car.counter());
+                dos.writeInt(Car.counter());
                 dos.flush();
             }
             catch (Exception e)
