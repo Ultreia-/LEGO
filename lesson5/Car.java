@@ -1,3 +1,5 @@
+package lesson5;
+
 import lejos.nxt.*;
 /**
  * A locomotion module with methods to drive

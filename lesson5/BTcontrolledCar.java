@@ -1,3 +1,5 @@
+package lesson5;
+
 import lejos.nxt.*;
 import lejos.nxt.comm.*;
 import java.io.*;

@@ -1,3 +1,5 @@
+package lesson5;
+
 import lejos.nxt.*;
 import lejos.nxt.comm.*;
 import java.io.*;
@@ -16,7 +18,7 @@ import java.io.*;
  * @author Ole Caprani
  * @version 26-2-13
  */
-public class BTcontrolledCar implements ButtonListener
+public class BTcontrolledCarNew implements ButtonListener
 {
     private String connected = "Connected";
     private String waiting = "Waiting...";
@@ -54,7 +56,7 @@ public class BTcontrolledCar implements ButtonListener
                 Car.forward(power, power);
                 Thread.sleep(dur);
                 Car.stop();
-                dos.writeInt(Car.counter());
+                //dos.writeInt(Car.counter());
                 dos.flush();
             }
             catch (Exception e)
