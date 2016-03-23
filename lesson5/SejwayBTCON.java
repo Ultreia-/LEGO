@@ -81,6 +81,8 @@ public class SejwayBTCON
 	
 	public void pidControl() 
 	{
+		try{
+
 		while (!Button.ESCAPE.isDown()) 
 		{
 			int normVal = ls.readNormalizedValue();
@@ -123,6 +125,7 @@ public class SejwayBTCON
 
 		}
 
+
 		dis.close();
         // dos.close();
         Thread.sleep(100); // wait for data to drain
@@ -130,6 +133,14 @@ public class SejwayBTCON
 
 		Motor.B.stop();
 		Motor.C.stop();
+		}
+		catch(Exception e){
+	        btc.close();
+
+			Motor.B.stop();
+			Motor.C.stop();
+
+		}
 	}
 	
 	public void shutDown()
@@ -175,7 +186,7 @@ public class SejwayBTCON
 			//LCD.drawInt((int)TP,7,0,4);
 			//LCD.refresh();
 			// dos.flush();
-			dis.flush();
+			// dis.flush();
 
 		}
 		catch (Exception e)
