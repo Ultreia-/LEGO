@@ -1,8 +1,4 @@
-package lesson5;
-
 import lejos.nxt.*;
-import lejos.nxt.comm.*;
-import java.io.*;
 
 /**
  * A controller for a self-balancing Lego robot with a light sensor
@@ -15,14 +11,15 @@ import java.io.*;
  * @version 26-2-13 by Ole Caprani for leJOS version 0.9.1
  */
 
-public class SejwayBTCON 
+
+public class Sejway 
 {
+
     // PID constants
-    private double KP = 28;
-    private double KI = 4;
-    private double KD = 33;
-    private int SCALE = 18;
-    private int TP = 45;
+    final int KP = 28;
+    final int KI = 4;
+    final int KD = 33;
+    final int SCALE = 18;
 
     // Global vars:
     int offset;
@@ -31,29 +28,9 @@ public class SejwayBTCON
 	
     LightSensor ls;
 	
-    private String connected    = "Connected";
-    private String waiting    = "Waiting...";
-    private String closing    = "Closing...";
-
-    private int steps = 0;
-
-    private BTConnection btc;
-    private DataInputStream dis;
-    private DataOutputStream dos;
-
-    public SejwayBTCON() 
+    public Sejway() 
     {
         ls = new LightSensor(SensorPort.S2, true);
-        
-        LCD.drawString(waiting,0,0);
-
-        btc = Bluetooth.waitForConnection();
-
-        LCD.clear();
-        LCD.drawString(connected,0,0);
-
-        dis = btc.openDataInputStream();
-        dos = btc.openDataOutputStream();
     }
 	
     public void getBalancePos() 
@@ -61,17 +38,12 @@ public class SejwayBTCON
         // Wait for user to balance and press orange button
         while (!Button.ENTER.isDown())
         {
-            calibrate();
-        }
-    }
-
-    private void calibrate() {
-
         // NXTway must be balanced.
         offset = ls.readNormalizedValue();
         LCD.clear();
         LCD.drawInt(offset, 2, 4);
         LCD.refresh();
+        }
     }
 	
     public void pidControl() 
@@ -101,7 +73,7 @@ public class SejwayBTCON
 
             // Power derived from PID value:
             int power = Math.abs(pid_val);
-            power = 55 + (power * TP) / 100; // NORMALIZE POWER
+            power = 55 + (power * 45) / 100; // NORMALIZE POWER
 
 
             if (pid_val > 0) {
@@ -111,17 +83,7 @@ public class SejwayBTCON
                 MotorPort.B.controlMotor(power, BasicMotorPort.BACKWARD);
                 MotorPort.C.controlMotor(power, BasicMotorPort.BACKWARD);
             }
-
-            if(Button.LEFT.isDown()) refresh();
-            // if(steps == 10000) break;
-            // steps++;
-
         }
-
-        Motor.B.stop();
-        Motor.C.stop();
-
-
     }
 	
     public void shutDown()
@@ -134,43 +96,9 @@ public class SejwayBTCON
 	
     public static void main(String[] args) 
     {
-        SejwayBTCON sej = new SejwayBTCON();
+        Sejway sej = new Sejway();
         sej.getBalancePos();
         sej.pidControl();
         sej.shutDown();
-    }
-
-    public void refresh()
-    {
-        try 
-        {
-        
-            Motor.B.flt();
-            Motor.C.flt();
-
-            //LCD.drawString("Waiting for GO",0,0);
-
-            calibrate();
-
-            KP = dis.readInt();
-            //LCD.clear();
-            //LCD.drawInt((int)KP,7,0,1);
-            //LCD.refresh();
-            KI = dis.readInt();
-            //LCD.drawInt((int)KI,7,0,2);
-            //LCD.refresh();
-            KD = dis.readInt();
-            //LCD.drawInt((int)KD,7,0,3);
-            //LCD.refresh();
-            
-            TP = dis.readInt();
-            //LCD.drawInt((int)TP,7,0,4);
-            //LCD.refresh();
-            dos.flush();
-
-
-        }
-        catch (Exception e)
-        {}
     }
 }
