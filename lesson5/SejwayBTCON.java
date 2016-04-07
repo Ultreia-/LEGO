@@ -18,16 +18,16 @@ import java.io.*;
 public class SejwayBTCON 
 {
 	// PID constants
-	private double KP = 28;
-	private double KI = 4;
-	private double KD = 33;
-	private int SCALE = 18;
-	private int TP = 45;
-	// private double KP 	= 15;
-	// private double KI 	= 0;
-	// private double KD 	= 33;
-	// private int SCALE 	= 18;
-	// private int TP 		= 45;
+	// private double KP = 28;
+	// private double KI = 4;
+	// private double KD = 33;
+	// private int SCALE = 18;
+	// private int TP = 45;
+	private double KP 	= 15;
+	private double KI 	= 0.45;
+	private double KD 	= 125;
+	private int SCALE 	= 18;
+	private int TP 		= 45;
 
 	// Global vars:
 	int offset;

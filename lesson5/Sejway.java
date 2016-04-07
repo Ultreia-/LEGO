@@ -18,10 +18,21 @@ public class Sejway
 {
 
     // PID constants
-    final int KP = 28;
-    final int KI = 4;
-    final int KD = 33;
-    final int SCALE = 18;
+    // final int KP = 28;
+    // final int KI = 4;
+    // final int KD = 33;
+
+    private double KP   = 75;
+    private double KI   = 3;
+    private double KD   = 50;
+    private int TP      = 55;
+
+    // private double KP   = 85;
+    // private double KI   = 3;
+    // private double KD   = 44;
+    // private int TP      = 51;
+
+    private int SCALE   = 18;
 
     // Global vars:
     int offset;
@@ -75,7 +86,7 @@ public class Sejway
 
             // Power derived from PID value:
             int power = Math.abs(pid_val);
-            power = 55 + (power * 45) / 100; // NORMALIZE POWER
+            power = 55 + (power * TP) / 100; // NORMALIZE POWER
 
 
             if (pid_val > 0) {
