@@ -17,67 +17,75 @@ import java.io.*;
 
 public class SejwayBTCON 
 {
-    // PID constants
-    private double KP = 35;
-    private double KI = 0;
-    private double KD = 35;
-    private int SCALE = 18;
-    private int TP = 45;
+	// PID constants
+	private double KP = 28;
+	private double KI = 4;
+	private double KD = 33;
+	private int SCALE = 18;
+	private int TP = 45;
+	// private double KP 	= 15;
+	// private double KI 	= 0;
+	// private double KD 	= 33;
+	// private int SCALE 	= 18;
+	// private int TP 		= 45;
 
-    // Global vars:
-    int offset;
-    int prev_error;
-    float int_error;
+	// Global vars:
+	int offset;
+	int prev_error;
+	float int_error;
 	
-    LightSensor ls;
+	LightSensor ls;
 	
-    private String connected    = "Connected";
-    private String waiting    = "Waiting...";
-    private String closing    = "Closing...";
+	private String connected 	= "Connected";
+	private String waiting		= "Waiting...";
+	private String closing 		= "Closing...";
 
-    private int steps = 0;
+	// private int steps = 0;
 
-    private BTConnection btc;
-    private DataInputStream dis;
-    private DataOutputStream dos;
+	private BTConnection btc;
+	private DataInputStream dis;
+	// private DataOutputStream dos;
 
-    public SejwayBTCON() 
-    {
-        ls = new LightSensor(SensorPort.S2);
-        
-        LCD.drawString(waiting,0,0);
+	public SejwayBTCON() 
+	{
+		ls = new LightSensor(SensorPort.S2, true);
+		
+		LCD.drawString(waiting,0,0);
 
-        btc = Bluetooth.waitForConnection();
+		btc = Bluetooth.waitForConnection();
 
-        LCD.clear();
-        LCD.drawString(connected,0,0);
+		LCD.clear();
+		LCD.drawString(connected,0,0);
 
-        dis = btc.openDataInputStream();
-    }
+		dis = btc.openDataInputStream();
+		// dos = btc.openDataOutputStream();
+	}
 	
-    public void getBalancePos() 
-    {
-        // Wait for user to balance and press orange button
-        while (!Button.ENTER.isDown())
-        {
-            calibrate();
-        }
-    }
+	public void getBalancePos() 
+	{
+		// Wait for user to balance and press orange button
+		while (!Button.ENTER.isDown())
+		{
+			calibrate();
+		}
+	}
 
-    private void calibrate() {
+	private void calibrate() {
 
-        // NXTway must be balanced.
-        offset = ls.getNormalizedLightValue();
-        LCD.clear();
-        LCD.drawInt(offset, 2, 4);
-        LCD.refresh();
-    }
+		// NXTway must be balanced.
+		offset = ls.readNormalizedValue();
+		LCD.clear();
+		LCD.drawInt(offset, 2, 4);
+		LCD.refresh();
+	}
 	
-    public void pidControl() 
-    {
+	public void pidControl() 
+	{
+		try{
+
 		while (!Button.ESCAPE.isDown()) 
 		{
-			int normVal = ls.getNormalizedLightValue();
+			int normVal = ls.readNormalizedValue();
 
 			// Proportional Error:
 			int error = normVal - offset;
@@ -112,25 +120,20 @@ public class SejwayBTCON
 			}
 
 			if(Button.LEFT.isDown()) refresh();
+			// if(steps == 10000) break;
+			// steps++;
+
 		}
 
-		Motor.B.stop();
-		Motor.C.stop();
-    }
-	
-    public void shutDown()
-    {
-		try{
-			
-    	dis.close();
 
+		dis.close();
+        // dos.close();
         Thread.sleep(100); // wait for data to drain
         btc.close();
 
 		Motor.B.stop();
 		Motor.C.stop();
 		}
-		
 		catch(Exception e){
 	        btc.close();
 
@@ -138,51 +141,55 @@ public class SejwayBTCON
 			Motor.C.stop();
 
 		}
-        // Shut down light sensor, motors
-        Motor.B.flt();
-        Motor.C.flt();
-        ls.setFloodlight(false);
-    }
+	}
 	
-    public static void main(String[] args) 
-    {
-        SejwayBTColor sej = new SejwayBTColor();
-        sej.getBalancePos();
-        sej.pidControl();
-        sej.shutDown();
-    }
+	public void shutDown()
+	{
+		// Shut down light sensor, motors
+		Motor.B.flt();
+		Motor.C.flt();
+		ls.setFloodlight(false);
+	}
+	
+	public static void main(String[] args) 
+	{
+		SejwayBTCON sej = new SejwayBTCON();
+		sej.getBalancePos();
+		sej.pidControl();
+		sej.shutDown();
+	}
 
-    public void refresh()
-    {
-        try 
-        {
-        
-            Motor.B.flt();
-            Motor.C.flt();
+	public void refresh()
+	{
+		try 
+		{
+		
+			Motor.B.flt();
+			Motor.C.flt();
 
-            //LCD.drawString("Waiting for GO",0,0);
+			//LCD.drawString("Waiting for GO",0,0);
 
-            KP = dis.readInt();
-            //LCD.clear();
-            //LCD.drawInt((int)KP,7,0,1);
-            //LCD.refresh();
-            KI = dis.readInt();
-            //LCD.drawInt((int)KI,7,0,2);
-            //LCD.refresh();
-            KD = dis.readInt();
-            //LCD.drawInt((int)KD,7,0,3);
-            //LCD.refresh();
-            
-            TP = dis.readInt();
-            //LCD.drawInt((int)TP,7,0,4);
-            //LCD.refresh();
-            //dos.flush();
-            
-            getBalancePos();
+			calibrate();
 
+			KP = dis.readInt();
+			//LCD.clear();
+			//LCD.drawInt((int)KP,7,0,1);
+			//LCD.refresh();
+			KI = dis.readInt();
+			//LCD.drawInt((int)KI,7,0,2);
+			//LCD.refresh();
+			KD = dis.readInt();
+			//LCD.drawInt((int)KD,7,0,3);
+			//LCD.refresh();
+			
+			TP = dis.readInt();
+			//LCD.drawInt((int)TP,7,0,4);
+			//LCD.refresh();
+			// dos.flush();
+			// dis.flush();
 
-        }
-        catch (Exception e)
-        {}
-    }
+		}
+		catch (Exception e)
+		{}
+	}
 }
