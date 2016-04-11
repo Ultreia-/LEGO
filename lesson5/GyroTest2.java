@@ -41,7 +41,7 @@ public class GyroTest2
 	public static void main(String[] args) throws Exception
 	{	
 	    gyro = new GyroSensor(SensorPort.S2);
-	    gyro.setOffset(617);
+	    gyro.setOffset(616);
 	    
 		GyroTest2 sej = new GyroTest2();
 		sej.pidControl();
