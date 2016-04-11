@@ -16,7 +16,6 @@ import lesson3.DataLogger;
  */
 public class GyroTest 
 {
-	static int counter = 0;
 	
 	public static void main(String[] args) throws Exception
 	{	
@@ -25,7 +24,7 @@ public class GyroTest
 		dl.start();
 				
 		GyroSensor gyro = new GyroSensor(SensorPort.S2);
-		gyro.setOffset(618);
+		
 		float minValue = 1023, maxValue = 0;
 		int sampleInterval = 5; // ms
 		
@@ -50,7 +49,6 @@ public class GyroTest
 			
 			Thread.sleep(sampleInterval);
 			
-			counter++;
 		}		
 
 		dl.close();
