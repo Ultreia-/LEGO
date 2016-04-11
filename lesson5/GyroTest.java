@@ -20,12 +20,10 @@ public class GyroTest
 	
 	public static void main(String[] args) throws Exception
 	{	
-		DataLogger dl = new DataLogger("Sample.txt");
+		//DataLogger dl = new DataLogger("Sample.txt");
 		
-		dl.start();
-		
-		dl.writeSample(1);
-		
+		//dl.start();
+				
 		GyroSensor gyro = new GyroSensor(SensorPort.S2);
 		
 		float minValue = 1023, maxValue = 0;
@@ -43,7 +41,7 @@ public class GyroTest
 			float value = gyro.readValue();
 			minValue = Math.min(minValue, value);
 			maxValue = Math.max(maxValue, value);
-			
+			/*
 			
 			if (counter > 800) {
 				MotorPort.B.controlMotor(0, BasicMotorPort.STOP);
@@ -54,8 +52,8 @@ public class GyroTest
 				MotorPort.B.controlMotor(100, BasicMotorPort.FORWARD);
 				MotorPort.C.controlMotor(100, BasicMotorPort.FORWARD);
 			}
-			
-           	dl.writeSample((int) value);
+			*/
+           	//dl.writeSample((int) value);
 			
 			LCD.drawInt((int) minValue, 6, 5, 2);
 			LCD.drawInt((int) maxValue, 6, 5, 3);
@@ -66,7 +64,7 @@ public class GyroTest
 			counter++;
 		}		
 
-		dl.close();
+		//dl.close();
 	}
 
 }

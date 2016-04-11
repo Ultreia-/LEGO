@@ -36,7 +36,7 @@ public class SejwayGyroBTCon
     private float gyroAngle;
     private float gOffset = 610;
     private float gAngleGlobal = 0;
-    private double tInterval = 0.01; //Maybe we should measure this
+    private double tInterval = 0.003; //Maybe we should measure this
 	
     private String connected    = "Connected";
     private String waiting    = "Waiting...";
@@ -47,6 +47,7 @@ public class SejwayGyroBTCon
     private BTConnection btc;
     private DataInputStream dis;
     private DataOutputStream dos;
+	private int loopCount = 0;
 
 
     public SejwayGyroBTCon() 
@@ -102,9 +103,6 @@ public class SejwayGyroBTCon
 			int power = Math.abs(pid_val);
 			power = 55 + (power * TP) / 100; // NORMALIZE POWER
 
-
-
-
 			if (pid_val > 0) {
 				MotorPort.B.controlMotor(power, BasicMotorPort.FORWARD);
 				MotorPort.C.controlMotor(power, BasicMotorPort.FORWARD);
@@ -114,17 +112,28 @@ public class SejwayGyroBTCon
 			}
 
 			if(Button.LEFT.isDown()) refresh();
+			/*
+			loopCount++;
+			
+			if(loopCount > 10000) {
+				while(true) {
+					Motor.B.stop();
+					Motor.C.stop();
+				}
+			}
+			*/
 		}
 
 		Motor.B.stop();
 		Motor.C.stop();
+		
     }
 
 
    
     public static void main(String[] args) 
     {
-        SejwayBTColor sej = new SejwayBTColor();
+        SejwayGyroBTCon sej = new SejwayGyroBTCon();
         sej.getBalancePos();
         sej.pidControl();
         sej.shutDown();
@@ -163,13 +172,21 @@ public class SejwayGyroBTCon
       float gyroRaw;
 
       gyroRaw = gyro.readValue(); // Replace this line?
+      
+      LCD.drawString("Raw: " + gyroRaw, 0, 0);
 
-      gOffset = (float) (EMAOFFSET * gyroRaw + (1-EMAOFFSET) * gOffset);
+      
+      gOffset = 615;//(float) (EMAOFFSET * gyroSpeed + (1-EMAOFFSET) * gOffset);
+
       gyroSpeed = gyroRaw - gOffset;
-
-      gAngleGlobal += gyroSpeed*tInterval;
+      
+      LCD.drawString("Offset: " + gOffset, 0, 1);
+      
+      gAngleGlobal += gyroSpeed; //*tInterval;
       
       gyroAngle = gAngleGlobal;
+      
+      LCD.drawString("Angle: " + gyroAngle, 0, 2);
 
     }
 
