@@ -19,27 +19,30 @@ public class GyroTest2
 {	
 	
     // PID constants
-    private double KP = 35;
+    private double KP = 400;
     private double KI = 0;
-    private double KD = 35;
+    private double KD = 200;
     private int SCALE = 18;
-    private int TP = 45;
+    private int TP = 100;
 
+    private static GyroSensor gyro;
+    
     // Global vars:
     int prev_error;
     float int_error;
-	
-    GyroSensor gyro = new GyroSensor(SensorPort.S2);
 
-    private static double EMAOFFSET = 0.0005; 
+    private static double EMAOFFSET = 0.005; 
     private float gyroSpeed;
     private float gyroAngle;
-    private float gOffset = 610;
+    private float gOffset = 0;
     private float gAngleGlobal = 0;
     private double tInterval = 0.003; //Maybe we should measure this
     
 	public static void main(String[] args) throws Exception
 	{	
+	    gyro = new GyroSensor(SensorPort.S2);
+	    gyro.setOffset(617);
+	    
 		GyroTest2 sej = new GyroTest2();
 		sej.pidControl();
 	}
@@ -95,7 +98,7 @@ public class GyroTest2
         
         LCD.drawString("Raw: " + gyroRaw, 0, 0);
         
-        gOffset = 615;//(float) (EMAOFFSET * gyroSpeed + (1-EMAOFFSET) * gOffset);
+        gOffset = (float) (EMAOFFSET * gyroRaw + (1-EMAOFFSET) * gOffset);
 
         gyroSpeed = gyroRaw - gOffset;
         
