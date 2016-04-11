@@ -1,6 +1,7 @@
 package lesson5;
 
 import lejos.nxt.*;
+import lejos.nxt.addon.GyroSensor;
 import lejos.nxt.comm.*;
 import java.io.*;
 
@@ -15,7 +16,7 @@ import java.io.*;
  * @version 26-2-13 by Ole Caprani for leJOS version 0.9.1
  */
 
-public class SejwayBTColor 
+public class SejwayGyroBTCon 
 {
     // PID constants
     private double KP = 35;
@@ -31,10 +32,10 @@ public class SejwayBTColor
     GyroSensor gyro = new GyroSensor(SensorPort.S2);
 
     private static double EMAOFFSET = 0.0005; 
-    private double gyroSpeed;
-    private double gyroAngle;
-    private double gOffset = 610;
-    private double gAngleGlobal = 0;
+    private float gyroSpeed;
+    private float gyroAngle;
+    private float gOffset = 610;
+    private float gAngleGlobal = 0;
     private double tInterval = 0.01; //Maybe we should measure this
 	
     private String connected    = "Connected";
@@ -42,16 +43,15 @@ public class SejwayBTColor
     private String closing    = "Closing...";
 
     private int steps = 0;
-gyro
+
     private BTConnection btc;
     private DataInputStream dis;
     private DataOutputStream dos;
 
 
-    public SejwayBTColor() 
+    public SejwayGyroBTCon() 
     {
-        ls = new ColorSensor(SensorPort.S2);
-        
+    	
         LCD.drawString(waiting,0,0);
 
         btc = Bluetooth.waitForConnection();
@@ -77,12 +77,10 @@ gyro
     {
 		while (!Button.ESCAPE.isDown()) 
 		{
-			int normVal = ls.getNormalizedLightValue();
-
             getGyroData();
 
 			// Proportional Error:
-			int error = gyroAngle;
+			float error = gyroAngle;
 			// Adjust far and near light readings:
 			if (error < 0) error = (int)(error * 1.8F);
 			
@@ -90,8 +88,8 @@ gyro
 			int_error = ((int_error + error) * 2)/3;
 			
 			// Derivative Error:
-			int deriv_error = error - prev_error;
-			prev_error = error;
+			int deriv_error = (int) (error - prev_error);
+			prev_error = (int) error;
 			
 			int pid_val = (int)(KP * error + KI * int_error + KD * deriv_error) / SCALE;
 			
@@ -157,7 +155,6 @@ gyro
         // Shut down light sensor, motors
         Motor.B.flt();
         Motor.C.flt();
-        ls.setFloodlight(false);
     }
 	
 
@@ -167,7 +164,7 @@ gyro
 
       gyroRaw = gyro.readValue(); // Replace this line?
 
-      gOffset = EMAOFFSET * gyroRaw + (1-EMAOFFSET) * gOffset;
+      gOffset = (float) (EMAOFFSET * gyroRaw + (1-EMAOFFSET) * gOffset);
       gyroSpeed = gyroRaw - gOffset;
 
       gAngleGlobal += gyroSpeed*tInterval;

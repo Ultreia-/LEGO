@@ -27,7 +27,6 @@ public class GyroTest
 		dl.writeSample(1);
 		
 		GyroSensor gyro = new GyroSensor(SensorPort.S2);
-		gyro.setOffset(0);
 		
 		float minValue = 1023, maxValue = 0;
 		int sampleInterval = 5; // ms
