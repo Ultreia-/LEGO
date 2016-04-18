@@ -19,7 +19,7 @@ public class Vehicle2
 		return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
 	}
 
-    public Vehicle2Update()
+    public Vehicle2()
     {
         mainLoop();
     }
