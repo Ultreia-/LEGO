@@ -9,7 +9,7 @@ import lejos.nxt.LightSensor;
 import java.lang.Math;
 
 
-public class Vehicle3
+public class Vehicle3Bad
 {
 
     private static SensorPort lightPort1 = SensorPort.S1;
@@ -51,7 +51,7 @@ public class Vehicle3
 		return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
 	}
 
-    public Vehicle3()
+    public Vehicle3Bad()
    
     {
 
@@ -121,17 +121,7 @@ public class Vehicle3
 
     private void decideBehavior() {
 
-        if(lightLevelLeft > 500 || lightLevelRight > 500) {
-
-            Car.forward(100, 100);
-
-
-        } else {
-
-            Car.forward(motorLeftSpeedSonic, motorRightSpeedSonic);
-    
-
-        }
+        Car.backward(Math.abs(motorLeftSpeedLight - motorLeftSpeedSonic * 2), Math.abs(motorRightSpeedLight -  motorRightSpeedSonic * 2));
 
 
     }
@@ -149,6 +139,6 @@ public class Vehicle3
 
 	public static void main(String [] args) throws Exception
     {
-        Vehicle3 v = new Vehicle3();
+        Vehicle3Bad v = new Vehicle3Bad();
     }
 }
