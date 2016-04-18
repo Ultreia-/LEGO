@@ -40,4 +40,20 @@ public class Car
 	    leftMotor.controlMotor(leftPower,backward);
 	    rightMotor.controlMotor(rightPower,backward);
     }
+
+    public static void turnLeft(int power)
+    {
+        leftMotor.controlMotor(power,backward);
+        rightMotor.controlMotor(power,forward);
+    }
+
+
+    public static void turnRight(int power)
+    {
+        leftMotor.controlMotor(power,forward);
+        rightMotor.controlMotor(power,backward);
+    }
+
+
+
 }
