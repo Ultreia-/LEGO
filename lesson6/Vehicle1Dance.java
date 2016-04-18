@@ -2,18 +2,18 @@ import lejos.nxt.Button;
 import lejos.nxt.LCD;
 import lejos.nxt.SensorPort;
 
-public class Vehicle1
+public class Vehicle1Dance
 {
 	private static SensorPort soundSensor = SensorPort.S1;
 	
-	private static int THRESHOLD = 500;
+	private static int THRESHOLD = 400;
     private int COUNT = 0;
 
 	private static int map(int x, int in_min, int in_max, int out_min, int out_max) {
 		return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
 	}
 
-    public Vehicle1()
+    public Vehicle1Dance()
     {
         mainLoop();
     }
@@ -52,7 +52,7 @@ public class Vehicle1
 
 	public static void main(String [] args) throws Exception
     {
-        Vehicle1 v = new Vehicle1();
+        Vehicle1Dance v = new Vehicle1Dance();
     }
 
 	private void checkThresholdAndDance(int soundlevel, int speed1, int speed2) {

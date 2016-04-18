@@ -21,9 +21,8 @@ public class Vehicle2Update
 
     public Vehicle2Update()
     {
-     
-    MIN_LIGHT = (lightSensorRight.readNormalizedValue() + lightSensorLeft.readNormalizedValue()) / 2; 
-    MAX_LIGHT = MIN_LIGHT + 1; //What a hack
+        MIN_LIGHT = (lightSensorRight.readNormalizedValue() + lightSensorLeft.readNormalizedValue()) / 2; 
+        MAX_LIGHT = MIN_LIGHT + 1; //What a hack
 
         mainLoop();
     }
