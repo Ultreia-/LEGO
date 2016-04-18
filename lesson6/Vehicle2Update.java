@@ -3,7 +3,7 @@ import lejos.nxt.LCD;
 import lejos.nxt.SensorPort;
 import lejos.nxt.LightSensor;
 
-public class Vehicle2
+public class Vehicle2Update
 {
     private static SensorPort lightPort1 = SensorPort.S1;
     private static SensorPort lightPort2 = SensorPort.S2;
@@ -11,16 +11,19 @@ public class Vehicle2
     private LightSensor lightSensorLeft = new LightSensor(lightPort2, false);
     private LightSensor lightSensorRight = new LightSensor(lightPort1, false);
 
-	private static int threshold = 500;
-    private int count = 0;
+	private int MAX_LIGHT = 0; private int MIN_LIGHT = 0;
+    
 
 	private static int map(int x, int in_min, int in_max, int out_min, int out_max)
     {
 		return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
 	}
 
-    public Vehicle2()
+    public Vehicle2Update()
     {
+    
+        MAX_LIGHT = (lightSensorRight.readNormalizedValue() + lightSensorLeft.readNormalizedValue()) / 2; 
+        MIN_LIGHT = (lightSensorRight.readNormalizedValue() + lightSensorLeft.readNormalizedValue()) / 2; 
         mainLoop();
     }
 
@@ -29,18 +32,21 @@ public class Vehicle2
         int lightLevelRight = 0;
         int lightLevelLeft = 0;
 
-        int moterRightSpeed = 0;
-        int moterLeftSpeed = 0;
+        int motorRightSpeed = 0;
+        int motorLeftSpeed = 0;
+
 
         while (!Button.ESCAPE.isDown())
         {
             lightLevelRight = lightSensorRight.readNormalizedValue();
             lightLevelLeft = lightSensorLeft.readNormalizedValue();
 
-            moterRightSpeed = map(lightLevelRight, 145, 890, 100, 40);
-            moterLeftSpeed = map(lightLevelLeft, 145, 890, 100, 40);
+            motorRightSpeed = map(lightLevelRight, MIN_LIGHT, MAX_LIGHT, 100, 0);
+            motorLeftSpeed = map(lightLevelLeft, MIN_LIGHT, MAX_LIGHT, 100, 0);
 
-            Car.forward(moterLeftSpeed, moterRightSpeed);
+            checkAndUpdateMaxAndMin(lightLevelLeft, lightLevelRight);
+
+            Car.forward(motorLeftSpeed, motorRightSpeed);
         }
 
         Car.stop();
@@ -57,8 +63,19 @@ public class Vehicle2
         }
     }
 
+
+    private void checkAndUpdateMaxAndMin(int lightleft, int lightright) {
+
+
+        if(lightleft > MAX_LIGHT) MAX_LIGHT = lightleft;
+        if(lightright > MAX_LIGHT) MAX_LIGHT = lightright;
+        if(lightleft < MIN_LIGHT) MIN_LIGHT = lightleft;
+        if(lightright < MIN_LIGHT) MIN_LIGHT = lightright;
+
+    }
+
 	public static void main(String [] args) throws Exception
     {
-        Vehicle2 v = new Vehicle2();
+        Vehicle2Update v = new Vehicle2Update();
     }
 }

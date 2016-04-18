@@ -19,7 +19,7 @@ public class Vehicle2
 		return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
 	}
 
-    public Vehicle2()
+    public Vehicle2Update()
     {
         mainLoop();
     }
@@ -29,18 +29,18 @@ public class Vehicle2
         int lightLevelRight = 0;
         int lightLevelLeft = 0;
 
-        int moterRightSpeed = 0;
-        int moterLeftSpeed = 0;
+        int motorRightSpeed = 0;
+        int motorLeftSpeed = 0;
 
         while (!Button.ESCAPE.isDown())
         {
             lightLevelRight = lightSensorRight.readNormalizedValue();
             lightLevelLeft = lightSensorLeft.readNormalizedValue();
 
-            moterRightSpeed = map(lightLevelRight, 145, 890, 100, 40);
-            moterLeftSpeed = map(lightLevelLeft, 145, 890, 100, 40);
+            motorRightSpeed = map(lightLevelRight, 145, 890, 100, 0);
+            motorLeftSpeed = map(lightLevelLeft, 145, 890, 100, 0);
 
-            Car.forward(moterLeftSpeed, moterRightSpeed);
+            Car.forward(motorLeftSpeed, motorRightSpeed);
         }
 
         Car.stop();
