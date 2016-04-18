@@ -6,10 +6,11 @@ public class Vehicle1
 {
 	private static SensorPort soundSensor = SensorPort.S1;
 	
-	private static int THRESHOLD = 500;
-    private int COUNT = 0;
+	private static int threshold = 500;
+    private int count = 0;
 
-	private static int map(int x, int in_min, int in_max, int out_min, int out_max) {
+	private static int map(int x, int in_min, int in_max, int out_min, int out_max)
+    {
 		return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
 	}
 
@@ -18,15 +19,16 @@ public class Vehicle1
         mainLoop();
     }
 
-    private void mainLoop() {
-        //Is This correct?!
+    private void mainLoop()
+    {
         soundSensor.setTypeAndMode(SensorPort.TYPE_SOUND_DB, SensorPort.MODE_RAW);
 
         int soundLevel;
         int speed1;
         int speed2;
 
-        while (!Button.ESCAPE.isDown()) {
+        while (!Button.ESCAPE.isDown())
+        {
             //DIrection = left - right
             soundLevel = 1023 - soundSensor.readRawValue();
 
@@ -43,9 +45,12 @@ public class Vehicle1
         LCD.clear();
         LCD.drawString("Program stopped", 0, 0);
 
-        try {
+        try
+        {
             Thread.sleep(2000);
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             //ignore
         }
     }
@@ -57,7 +62,7 @@ public class Vehicle1
 
 	private void checkThresholdAndDance(int soundlevel, int speed1, int speed2) {
 
-		if(soundlevel > THRESHOLD)
+		if(soundlevel > threshold)
         {
 			dance(speed1);
 		}
@@ -69,26 +74,26 @@ public class Vehicle1
 
 	private void dance(int speed)
     {
-		if(COUNT < 4) {
+		if(count < 4) {
 
 			Car.turnRight(speed);
 
-		} else if (COUNT < 8) {
+		} else if (count < 8) {
 
 			Car.turnLeft(speed);
 
 		}
 
-		COUNT++;
+		count++;
 
-		if(COUNT == 9) {
+		if(count == 9) count = 0;
 
-			COUNT = 0;
-		}
-
-        try {
+        try
+        {
             Thread.sleep(100);
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             //ignore
         }
 	}
