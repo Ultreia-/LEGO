@@ -11,7 +11,7 @@ public class Vehicle2Update
     private LightSensor lightSensorLeft = new LightSensor(lightPort2, false);
     private LightSensor lightSensorRight = new LightSensor(lightPort1, false);
 
-	private int MAX_LIGHT = 0; private int MIN_LIGHT = 0;
+	private int MAX_LIGHT, MIN_LIGHT ;
     
 
 	private static int map(int x, int in_min, int in_max, int out_min, int out_max)
@@ -21,9 +21,10 @@ public class Vehicle2Update
 
     public Vehicle2Update()
     {
-    
-        MAX_LIGHT = (lightSensorRight.readNormalizedValue() + lightSensorLeft.readNormalizedValue()) / 2; 
-        MIN_LIGHT = (lightSensorRight.readNormalizedValue() + lightSensorLeft.readNormalizedValue()) / 2; 
+     
+    MIN_LIGHT = (lightSensorRight.readNormalizedValue() + lightSensorLeft.readNormalizedValue()) / 2; 
+    MAX_LIGHT = MIN_LIGHT + 1; //What a hack
+
         mainLoop();
     }
 
@@ -35,14 +36,13 @@ public class Vehicle2Update
         int motorRightSpeed = 0;
         int motorLeftSpeed = 0;
 
-
         while (!Button.ESCAPE.isDown())
         {
             lightLevelRight = lightSensorRight.readNormalizedValue();
             lightLevelLeft = lightSensorLeft.readNormalizedValue();
 
-            motorRightSpeed = map(lightLevelRight, MIN_LIGHT, MAX_LIGHT, 100, 0);
-            motorLeftSpeed = map(lightLevelLeft, MIN_LIGHT, MAX_LIGHT, 100, 0);
+            motorRightSpeed = map(lightLevelRight, MIN_LIGHT, MAX_LIGHT, 100, 40);
+            motorLeftSpeed = map(lightLevelLeft, MIN_LIGHT, MAX_LIGHT, 100, 40);
 
             checkAndUpdateMaxAndMin(lightLevelLeft, lightLevelRight);
 

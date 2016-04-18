@@ -37,8 +37,8 @@ public class Vehicle2
             lightLevelRight = lightSensorRight.readNormalizedValue();
             lightLevelLeft = lightSensorLeft.readNormalizedValue();
 
-            motorRightSpeed = map(lightLevelRight, 145, 890, 100, 0);
-            motorLeftSpeed = map(lightLevelLeft, 145, 890, 100, 0);
+            motorRightSpeed = map(lightLevelRight, 145, 890, 100, 40);
+            motorLeftSpeed = map(lightLevelLeft, 145, 890, 100, 40);
 
             Car.forward(motorLeftSpeed, motorRightSpeed);
         }
