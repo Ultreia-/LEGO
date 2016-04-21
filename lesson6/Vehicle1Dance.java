@@ -1,94 +1,94 @@
-import lejos.nxt.Button;
-import lejos.nxt.LCD;
-import lejos.nxt.SensorPort;
+import lejos.nxt.button;
+import lejos.nxt.lcd;
+import lejos.nxt.sensorport;
 
-public class Vehicle1Dance
+public class vehicle1dance
 {
-	private static SensorPort soundSensor = SensorPort.S1;
+	private static sensorport soundsensor = sensorport.s1;
 	
-	private static int THRESHOLD = 400;
-    private int COUNT = 0;
+	private static int threshold = 400;
+    private int count = 0;
 
 	private static int map(int x, int in_min, int in_max, int out_min, int out_max) {
 		return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
 	}
 
-    public Vehicle1Dance()
+    public vehicle1dance()
     {
-        mainLoop();
+        mainloop();
     }
 
-    private void mainLoop() {
-        //Is This correct?!
-        soundSensor.setTypeAndMode(SensorPort.TYPE_SOUND_DB, SensorPort.MODE_RAW);
+    private void mainloop() {
+        //is this correct?!
+        soundsensor.settypeandmode(sensorport.type_sound_db, sensorport.mode_raw);
 
-        int soundLevel;
+        int soundlevel;
         int speed1;
         int speed2;
 
-        while (!Button.ESCAPE.isDown()) {
-            //DIrection = left - right
-            soundLevel = 1023 - soundSensor.readRawValue();
+        while (!button.escape.isdown()) {
+            //direction = left - right
+            soundlevel = 1023 - soundsensor.readrawvalue();
 
-            speed1 = map(soundLevel, 0, 1023, 60, 100);
-            speed2 = map(soundLevel, 0, 1023, 0, -100);
+            speed1 = map(soundlevel, 0, 1023, 60, 100);
+            speed2 = map(soundlevel, 0, 1023, 0, -100);
 
-            LCD.drawString("Raw: " + soundLevel, 0, 0);
-            LCD.drawString("Speed: " + speed1, 0, 1);
+            lcd.drawstring("raw: " + soundlevel, 0, 0);
+            lcd.drawstring("speed: " + speed1, 0, 1);
 
-            checkThresholdAndDance(soundLevel, speed1, speed1);
+            checkthresholdanddance(soundlevel, speed1, speed1);
         }
 
-        Car.stop();
-        LCD.clear();
-        LCD.drawString("Program stopped", 0, 0);
+        car.stop();
+        lcd.clear();
+        lcd.drawstring("program stopped", 0, 0);
 
         try {
-            Thread.sleep(2000);
-        } catch (Exception e) {
+            thread.sleep(2000);
+        } catch (exception e) {
             //ignore
         }
     }
 
-	public static void main(String [] args) throws Exception
+	public static void main(string [] args) throws exception
     {
-        Vehicle1Dance v = new Vehicle1Dance();
+        vehicle1dance v = new vehicle1dance();
     }
 
-	private void checkThresholdAndDance(int soundlevel, int speed1, int speed2) {
+	private void checkthresholdanddance(int soundlevel, int speed1, int speed2) {
 
-		if(soundlevel > THRESHOLD)
+		if(soundlevel > threshold)
         {
 			dance(speed1);
 		}
         else
         {
-			Car.forward(speed1, speed2);
+			car.forward(speed1, speed2);
 		}
 	}
 
 	private void dance(int speed)
     {
-		if(COUNT < 4) {
+		if(count < 4) {
 
-			Car.turnRight(speed);
+			car.turnright(speed);
 
-		} else if (COUNT < 8) {
+		} else if (count < 8) {
 
-			Car.turnLeft(speed);
+			car.turnleft(speed);
 
 		}
 
-		COUNT++;
+		count++;
 
-		if(COUNT == 9) {
+		if(count == 9) {
 
-			COUNT = 0;
+			count = 0;
 		}
 
         try {
-            Thread.sleep(100);
-        } catch (Exception e) {
+            thread.sleep(100);
+        } catch (exception e) {
             //ignore
         }
 	}

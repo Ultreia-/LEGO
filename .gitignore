@@ -1,3 +1,5 @@
 .idea/
 LEGO.iml
 *.class
+/lesson5/
+/bin/
