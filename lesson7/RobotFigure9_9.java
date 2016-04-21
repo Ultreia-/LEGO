@@ -7,17 +7,16 @@ import lejos.nxt.*;
  * "Mobile Robots, Inspiration to Implementation", 
  * Second Edition, 1999.
  */
-public class RobotFigure9_9 {
-
-	    
-    public static void main(String [] args)  throws Exception {
-
+public class RobotFigure9_9
+{
+    public static void main(String [] args)  throws Exception
+    {
     	SharedCar [] car = { new SharedCar(), new SharedCar(), 
                              new SharedCar(), new SharedCar()};
     	
     	CarDriver cd = new CarDriver();
     	
-    	//Escape escape = new Escape(car[0]);
+    	Escape escape = new Escape(car[0]);
     	Avoid avoid   = new Avoid(car[1]);
     	Follow follow = new Follow(car[2]);
     	Cruise cruise = new Cruise(car[3]);
@@ -25,9 +24,11 @@ public class RobotFigure9_9 {
     	Arbiter arbiter = new Arbiter(car, cd);
     	
         LCD.drawString("Robot 9.9", 0, 0);
-        Button.waitForAnyPress();
+        // Button.waitForAnyPress();
 
-        arbiter.setDaemon(true);	    
+        escape.setDaemon(true);
+        escape.start();
+        arbiter.setDaemon(true);	   
         arbiter.start();
         avoid.setDaemon(true);
         avoid.start();
@@ -35,19 +36,10 @@ public class RobotFigure9_9 {
         follow.start();
         cruise.setDaemon(true);
         cruise.start();
-	    	      
-        while ( ! Button.ESCAPE.isDown())
+	   	    
+        while (! Button.ESCAPE.isDown())
         {	
             LCD.drawString("Winner " + arbiter.winner(), 0, 3);
         }
-
     }
 }
-
-
-
-
-
-
-	
-

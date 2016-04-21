@@ -56,6 +56,6 @@ public class SharedCar implements Car
     	{
     		result = carCommand;
     	}
-    	return ( result);
+    	return result;
     }
 }
