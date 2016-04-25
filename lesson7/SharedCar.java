@@ -1,3 +1,5 @@
+package lesson7;
+
 
 /**
  * A locomotion module with methods to drive

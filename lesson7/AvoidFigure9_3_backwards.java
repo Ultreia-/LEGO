@@ -1,3 +1,5 @@
+package lesson7;
+
 
 import lejos.nxt.*;
 import lejos.util.Delay;
@@ -7,7 +9,7 @@ import lejos.util.Delay;
  * "Mobile Robots, Inspiration to Implementation", 
  * Second Edition, 1999.
  */
-public class AvoidFigure9_3
+public class AvoidFigure9_3_backwards
 {
 	public static void main(String [] args)  throws Exception
 	{

@@ -10,17 +10,22 @@ import lejos.util.Delay;
  * Second Edition, 1999.
  */
 
-class Follow extends Thread
+class FollowWithMotor extends Thread
 {
     private SharedCar car = new SharedCar();
 
-	private int power = 70, ms = 500;
+	private int power = 70, ms = 250;
 	LightSensor light = new LightSensor(SensorPort.S4);
+	private MotorPort sensorMotor = MotorPort.A;
 	
 	int frontLight, leftLight, rightLight, delta;
 	int lightThreshold;
 	
-    public Follow(SharedCar car)
+    private final static int forward  = 1,
+            backward = 2,
+            stop     = 3;
+	
+    public FollowWithMotor(SharedCar car)
     {
        this.car = car;	
        lightThreshold = light.getLightValue();
@@ -43,19 +48,20 @@ class Follow extends Thread
 	    	while ( frontLight > lightThreshold )
 	    	{
 	    		// Get the light to the left
-	    		car.forward(0, power);
+	    		//car.forward(0, power);
+	    		//sensorMotor.controlMotor(power, forward);
+	    		Motor.A.rotateTo(-45);
 	    		Delay.msDelay(ms);
 	    		leftLight = light.getLightValue();
 	    		
 	    		// Get the light to the right
-	    		car.backward(0, power);
-	    		Delay.msDelay(ms);
-    		    car.forward(power, 0);
+	    		//car.backward(0, power);
+	    		Motor.A.rotateTo(45);
 	    		Delay.msDelay(ms);
 	    		rightLight = light.getLightValue();
 	    		
 	    		// Turn back to start position
-	    		car.backward(power, 0);
+	    		Motor.A.rotateTo(0);
 	    		Delay.msDelay(ms);
 	    	
 	    		// Follow light for a while

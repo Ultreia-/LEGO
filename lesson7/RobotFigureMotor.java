@@ -9,7 +9,7 @@ import lejos.nxt.*;
  * "Mobile Robots, Inspiration to Implementation", 
  * Second Edition, 1999.
  */
-public class RobotFigure9_9
+public class RobotFigureMotor
 {
     public static void main(String [] args)  throws Exception
     {
@@ -20,7 +20,7 @@ public class RobotFigure9_9
     	
     	Escape escape = new Escape(car[0]);
     	Avoid avoid   = new Avoid(car[1]);
-    	Follow follow = new Follow(car[2]);
+    	FollowWithMotor follow = new FollowWithMotor(car[2]);
     	Cruise cruise = new Cruise(car[3]);
     	
     	Arbiter arbiter = new Arbiter(car, cd);

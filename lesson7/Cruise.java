@@ -1,3 +1,5 @@
+package lesson7;
+
 
 /*
  * Cruise behavior, p. 303 in

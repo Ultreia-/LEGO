@@ -1,3 +1,5 @@
+package lesson7;
+
 
 import lejos.nxt.*;
 import lejos.util.Delay;

@@ -1,3 +1,4 @@
+package lesson7;
 
 /*
  *  Arbiter pass the highest priority car command
