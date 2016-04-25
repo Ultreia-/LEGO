@@ -45,15 +45,6 @@ class Escape extends Thread
 			Delay.msDelay(ms*2);
 			car.forward(-power, power);
 			Delay.msDelay((int)(ms*3.4));
-
-			// if(bLeft)
-			// {
-
-			// }
-			// else if(bRight)
-			// {
-
-			// }
 		}
 	}
 }
