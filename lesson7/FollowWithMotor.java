@@ -48,16 +48,13 @@ class FollowWithMotor extends Thread
 	    	while ( frontLight > lightThreshold )
 	    	{
 	    		// Get the light to the left
-	    		//car.forward(0, power);
-	    		//sensorMotor.controlMotor(power, forward);
-	    		Motor.A.rotateTo(-45);
-	    		Delay.msDelay(ms);
+
+	    		Motor.A.rotateTo(45);
 	    		leftLight = light.getLightValue();
 	    		
 	    		// Get the light to the right
 	    		//car.backward(0, power);
-	    		Motor.A.rotateTo(45);
-	    		Delay.msDelay(ms);
+	    		Motor.A.rotateTo(-45);
 	    		rightLight = light.getLightValue();
 	    		
 	    		// Turn back to start position
@@ -66,7 +63,7 @@ class FollowWithMotor extends Thread
 	    	
 	    		// Follow light for a while
 	    		delta = leftLight-rightLight;
-	    		car.forward(power-delta, power+delta);
+	    		car.forward(power+delta, power-delta);
 	    		Delay.msDelay(ms);
     		
 	    		frontLight = light.getLightValue();

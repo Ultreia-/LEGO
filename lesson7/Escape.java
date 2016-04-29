@@ -11,7 +11,7 @@ class Escape extends Thread
 {
 	private SharedCar car = new SharedCar();
 
-	private int power = 70, ms = 500;
+	private int power = 70, ms = 300;
 	TouchSensor bumperRight = new TouchSensor(SensorPort.S2);
 	TouchSensor bumperLeft = new TouchSensor(SensorPort.S3);
 	
