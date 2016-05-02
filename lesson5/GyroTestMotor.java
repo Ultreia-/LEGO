@@ -14,7 +14,7 @@ import lesson3.DataLogger;
  * 
  * @author Lawrie Griffiths
  */
-public class GyroTest 
+public class GyroTestMotor 
 {
 	
 	public static void main(String[] args) throws Exception

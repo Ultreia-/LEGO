@@ -1,10 +1,13 @@
-import lejos.nxt.button;
-import lejos.nxt.lcd;
-import lejos.nxt.sensorport;
+package lesson6;
 
-public class vehicle1dance
+import lejos.nxt.SensorPort;
+import lejos.nxt.Button;
+import lejos.nxt.LCD;
+import lejos.nxt.SensorPort;
+
+public class Vehicle1Dance
 {
-	private static sensorport soundsensor = sensorport.s1;
+	private static SensorPort soundsensor = SensorPort.S1;
 	
 	private static int threshold = 400;
     private int count = 0;
@@ -13,46 +16,46 @@ public class vehicle1dance
 		return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
 	}
 
-    public vehicle1dance()
+    public Vehicle1Dance()
     {
         mainloop();
     }
 
     private void mainloop() {
         //is this correct?!
-        soundsensor.settypeandmode(sensorport.type_sound_db, sensorport.mode_raw);
+        soundsensor.setTypeAndMode(SensorPort.TYPE_SOUND_DB, SensorPort.MODE_RAW);
 
         int soundlevel;
         int speed1;
         int speed2;
 
-        while (!button.escape.isdown()) {
+        while (!Button.ESCAPE.isDown()) {
             //direction = left - right
-            soundlevel = 1023 - soundsensor.readrawvalue();
+            soundlevel = 1023 - soundsensor.readRawValue();
 
             speed1 = map(soundlevel, 0, 1023, 60, 100);
             speed2 = map(soundlevel, 0, 1023, 0, -100);
 
-            lcd.drawstring("raw: " + soundlevel, 0, 0);
-            lcd.drawstring("speed: " + speed1, 0, 1);
+            LCD.drawString("raw: " + soundlevel, 0, 0);
+            LCD.drawString("speed: " + speed1, 0, 1);
 
             checkthresholdanddance(soundlevel, speed1, speed1);
         }
 
-        car.stop();
-        lcd.clear();
-        lcd.drawstring("program stopped", 0, 0);
+        Car.stop();
+        LCD.clear();
+        LCD.drawString("program stopped", 0, 0);
 
         try {
-            thread.sleep(2000);
-        } catch (exception e) {
+            Thread.sleep(2000);
+        } catch (Exception e) {
             //ignore
         }
     }
 
-	public static void main(string [] args) throws exception
+	public static void main(String [] args) throws Exception
     {
-        vehicle1dance v = new vehicle1dance();
+        Vehicle1Dance v = new Vehicle1Dance();
     }
 
 	private void checkthresholdanddance(int soundlevel, int speed1, int speed2) {
@@ -63,7 +66,7 @@ public class vehicle1dance
 		}
         else
         {
-			car.forward(speed1, speed2);
+			Car.forward(speed1, speed2);
 		}
 	}
 
@@ -71,11 +74,11 @@ public class vehicle1dance
     {
 		if(count < 4) {
 
-			car.turnright(speed);
+			Car.turnRight(speed);
 
 		} else if (count < 8) {
 
-			car.turnleft(speed);
+			Car.turnLeft(speed);
 
 		}
 
@@ -87,8 +90,8 @@ public class vehicle1dance
 		}
 
         try {
-            thread.sleep(100);
-        } catch (exception e) {
+            Thread.sleep(100);
+        } catch (Exception e) {
             //ignore
         }
 	}

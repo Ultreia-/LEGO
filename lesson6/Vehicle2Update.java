@@ -1,3 +1,5 @@
+package lesson6;
+
 import lejos.nxt.Button;
 import lejos.nxt.LCD;
 import lejos.nxt.SensorPort;
