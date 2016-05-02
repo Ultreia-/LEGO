@@ -1,6 +1,7 @@
 package lesson8;
 
 import java.util.AbstractQueue;
+import java.util.ArrayList;
 import java.util.Iterator;
 
 public class FixedQueue<T> extends AbstractQueue<T>{
@@ -28,7 +29,7 @@ public class FixedQueue<T> extends AbstractQueue<T>{
 	{
 		T element = elements.get(0);
 		elements.remove(0);
-		return elements;
+		return (T) elements;
 	}
 
 	@Override
@@ -36,7 +37,7 @@ public class FixedQueue<T> extends AbstractQueue<T>{
 	{
 		if(elements.size() >= maxSize) elements.remove(0); //trim log
 
-		return elements.add(o);
+		return elements.add((T) o);
 	}
 
 	@Override

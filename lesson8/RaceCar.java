@@ -20,12 +20,12 @@ public class RaceCar
     	Cruise cruise = new Cruise(car[0]);
     	//Gyro stuff
     	
-    	cruise.sensor.calibrate();
+    	//cruise.sensor.calibrate();
     	
     	Button.waitForAnyPress();
     	
     	Arbiter arbiter = new Arbiter(car, cd);
-    	
+    	LCD.clear();
         LCD.drawString("Robot 9.9", 0, 0);
 
         arbiter.setDaemon(true);	   

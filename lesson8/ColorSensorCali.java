@@ -14,20 +14,21 @@ import lejos.nxt.*;
  * @author  Ole Caprani
  * @version 20.02.13
  */
-public class ThreeColorSensor {
+public class ColorSensorCali {
 
-   private LightSensor ls; 
+   private ColorSensor cs; 
    private int blackLightValue;
    private int whiteLightValue;
    private int whiteGreenThreshold;
    private int greenBlackThreshold;
    private int greenLightValue;
 
-   public ThreeColorSensor(SensorPort p)
+   public ColorSensorCali(SensorPort p)
    {
-	   ls = new LightSensor(p); 
+	   cs = new ColorSensor(p);
+; 
 	   // Use the light sensor as a reflection sensor
-	   ls.setFloodlight(true);
+	   cs.setFloodlight(true);
    }
 
    private int read(String color){
@@ -41,7 +42,7 @@ public class ThreeColorSensor {
 	   LCD.drawString("to calibrate", 0, 1);
 	   LCD.drawString(color, 0, 2);
 	   while( !Button.ENTER.isPressed() ){
-	      lightValue = ls.readValue();
+	      lightValue = cs.getNormalizedLightValue();
 	      LCD.drawInt(lightValue, 4, 10, 2);
 	      LCD.refresh();
 	   }
@@ -59,19 +60,19 @@ public class ThreeColorSensor {
    }
    
    public boolean black() {
-           return (ls.readValue()< greenBlackThreshold);
+           return (cs.getNormalizedLightValue()< greenBlackThreshold);
    }
    
    public boolean white() {
-	   return (ls.readValue()> whiteGreenThreshold);
+	   return (cs.getNormalizedLightValue()> whiteGreenThreshold);
    }
    
    public boolean green() {
-	   return (ls.readValue()>= greenBlackThreshold && ls.readValue() <= whiteGreenThreshold);
+	   return (cs.getNormalizedLightValue()>= greenBlackThreshold && cs.getNormalizedLightValue() <= whiteGreenThreshold);
    }
    
    public int light() {
- 	   return ls.readValue();
+ 	   return cs.getNormalizedLightValue();
    }
    
 }

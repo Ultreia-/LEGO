@@ -25,11 +25,12 @@ class Cruise extends Thread
     private static int power = 90;
     private static int sampleInterval = 10;
     
-	public ThreeColorSensor sensor = new ThreeColorSensor(SensorPort.S3);
+	public ColorSensorCali sensor = new ColorSensorCali(SensorPort.S1);
     
     public Cruise(SharedCar car)
     {
     	this.car = car;
+    	sensor.calibrate();
     	
     }
     
