@@ -5,28 +5,60 @@ import java.util.Iterator;
 
 public class FixedQueue<T> extends AbstractQueue<T>{
 
+	ArrayList<T> elements = new ArrayList<T>();
+	int maxSize = 0;
+
+	public FixedQueue(int maxSize)
+	{
+		this.maxSize = maxSize;
+	}
+
 	@Override
-	public boolean remove(Object o) {
-		// TODO Auto-generated method stub
+	public boolean remove(Object o)
+	{
 		return false;
 	}
 
-	@Override
-	public boolean contains(Object o) {
-		// TODO Auto-generated method stub
-		return false;
+	public T peak()
+	{
+		return elements.get(0);
+	}
+
+	public T take()
+	{
+		T element = elements.get(0);
+		elements.remove(0);
+		return elements;
 	}
 
 	@Override
-	public int size() {
-		// TODO Auto-generated method stub
-		return 0;
+	public boolean add(Object o)
+	{
+		if(elements.size() >= maxSize) elements.remove(0); //trim log
+
+		return elements.add(o);
 	}
 
 	@Override
-	public Iterator<T> iterator() {
-		// TODO Auto-generated method stub
-		return null;
+	public boolean contains(Object o)
+	{
+		return elements.contains(o);
 	}
 
+	@Override
+	public int size()
+	{
+		return elements.size();
+	}
+
+	@Override
+	public Iterator<T> iterator()
+	{
+		return elements.iterator();
+	}
+
+	public boolean hasReachedMaxSize()
+	{
+		return elements.size() == maxSize;
+	}
 }

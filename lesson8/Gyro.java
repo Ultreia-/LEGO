@@ -14,7 +14,7 @@ class Gyro extends Thread
 
     GyroSensor gyro = new GyroSensor(SensorPort.S1);
 
-    Queue valueQueue = new Queue();
+    FixedQueue valueQueue<float> = new FixedQueue<float>(4);
 
     Private int delta = 0;
 
@@ -26,13 +26,17 @@ class Gyro extends Thread
 	public void run() 
     {
         float firstValue = gyro.readValue();
-     
+        valueQueue.add(firstValue);
 
         while (true)
         {
             float value = gyro.readValue();
-        	/*  Drive forward */
-			// car.forward(power, power); 
+
+            if(valueQueue.hasReachedMaxSize())
+            {
+                float lastValue = valueQueue.take();
+                
+            }
         }
     }
 }
