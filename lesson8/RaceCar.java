@@ -18,9 +18,11 @@ public class RaceCar
     	CarDriver cd = new CarDriver();
 
     	//Cruise cruise = new Cruise(car[0]);
-    	Gyro gyro = new Gyro(car[0]);
     	//CruiseStraight cruise = new CruiseStraight(car[1]);
     	PIDCruise cruise = new PIDCruise(car[1]);
+    	
+    	Gyro gyro = new Gyro(car[0], cruise);
+    	
     	//Gyro stuff   	
 
     	Button.waitForAnyPress();

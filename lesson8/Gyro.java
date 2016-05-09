@@ -15,7 +15,8 @@ import lejos.util.Delay;
 class Gyro extends Thread
 {
     private SharedCar car;
-    private int leftRightCounter = 1;
+    private int plateuCount = 0;
+    private int[] turnCommands = {1, 0, -1, 0}; //-1: left, 0: nothing, 1: right
 
     GyroSensor gyro = new GyroSensor(SensorPort.S2);
 
@@ -24,10 +25,12 @@ class Gyro extends Thread
     private float delta;
     
 	private float gyroThreshold = 60;
+	private PIDCruise cruise;
 
-    public Gyro(SharedCar car)
+    public Gyro(SharedCar car, PIDCruise cruise)
     {
     	this.car = car;
+    	this.cruise = cruise;
     	reset();
     }
     
@@ -43,25 +46,32 @@ class Gyro extends Thread
     
         	LCD.clear();
         	
-         	LCD.drawString("Plateau", 1, 2); // We have reached a platou
+         	LCD.drawString("Plateau", 1, 2); // We have reached a plateau
          	
-         	if(leftRightCounter % 2 == 1) {
-         		
-         		turnRight();
-         		
-         	} else {
-         		
-         		turnLeft();
-         		
+         	try{
+	         		
+	         	switch(turnCommands[plateuCount])
+	         	{
+	         		case -1:
+	         			turnLeft();
+	         			break;
+	         		case 1:
+	             		turnRight();
+	         			break;
+	         	}
+	         	
+	         	plateuCount++;
+	         
+	        	Delay.msDelay(1200);
+	        	
+	        	cruise.reset();
+	        	reset();
+	        
          	}
-         	
-         	leftRightCounter++;
-         	
-         	
-        	Delay.msDelay(1550);
-        	
-        	reset();
-        	
+         	catch(Exception e) //turn off turning behavior
+         	{
+         		car.noCommand();
+         	}	
         }
     }
 	
@@ -73,7 +83,7 @@ class Gyro extends Thread
 
 	private void turnLeft() {
 		
-		car.forward(70, 100);
+		car.forward(75, 100);
 
 	}
 	private void reset() {

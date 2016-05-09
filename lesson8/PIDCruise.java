@@ -1,5 +1,7 @@
 package lesson8;
 
+import java.sql.ResultSet;
+
 import lejos.nxt.LCD;
 import lejos.nxt.LightSensor;
 import lejos.nxt.SensorPort;
@@ -20,10 +22,10 @@ class PIDCruise extends Thread
 	private static int preError = 0, error, leftReading, rightReading, adjustedPower, 
 			offset, turn, derivative = 0, integral = 0;
 	private static double pc = 1;
-	private static double kp = 0.3;
+	private static double kp = 0.2;
 	private static double dt = 0.0014;
-	private static double ki = (kp * 1.0 * dt)/pc;
-	private static double kd = 0;//(kp*pc)/(8*dt);
+	private static double ki = (kp * 0.5 * dt)/pc;
+	private static double kd = 12; //(kp*pc)/(8*dt);
     private static int power = 100;
     private static int sampleInterval = 10;
     
@@ -53,6 +55,8 @@ class PIDCruise extends Thread
             derivative = error - preError;
             
             turn = (int)(kp * error) + (int)(ki * integral) + (int)(kd * derivative);
+            
+            LCD.drawString("I: " + ki*integral, 0, 6);
 
           
             car.forward(power+turn,power-turn);
@@ -63,6 +67,13 @@ class PIDCruise extends Thread
             Delay.msDelay(sampleInterval);
         }
     }
+	
+	public void reset() {
+		
+		integral = 0;
+		
+	}
+	
 }
 	
 
