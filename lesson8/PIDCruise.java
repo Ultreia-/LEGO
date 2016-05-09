@@ -56,7 +56,9 @@ class PIDCruise extends Thread
 
           
             car.forward(power+turn,power-turn);
-                          
+            //car.stop();
+              
+            
             preError = error;
             Delay.msDelay(sampleInterval);
         }

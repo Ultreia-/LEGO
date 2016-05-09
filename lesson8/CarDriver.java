@@ -2,9 +2,6 @@ package lesson8;
 
 
 import lejos.nxt.*;
-import lejos.robotics.RegulatedMotor;
-import lejos.robotics.navigation.DifferentialPilot;
-import lesson8.CarCommand.Command;
 /*
  * A car driver module with a method to drive
  * a differential car with two independent motors. The left motor 
@@ -25,41 +22,26 @@ public class CarDriver
 	          stop     = 3;
 	
     private MotorPort leftMotor = MotorPort.C;
-    private MotorPort rightMotor= MotorPort.B;	
-    private DifferentialPilot pilot;
-
-    
+    private MotorPort rightMotor= MotorPort.B;
+	
 	public CarDriver()
 	{
-		
-		pilot = new DifferentialPilot(8.2, 16.0, Motor.C, Motor.B);
-		
 	}
 	
-	private void setPilotMode(CarCommand.Command carCommand)
+	private int ccToMc(CarCommand.Command carCommand)
 	{
 		switch ( carCommand )
 		{
-		case FORWARD:  pilot.forward();
-		case BACKWARD: pilot.backward();
-		case STOP:     pilot.stop();
-		case LEFT: 		turnleft();
-		case RIGHT: 	pilot.arc(20, 90);
-
+		case FORWARD:  return forward;
+		case BACKWARD: return backward;
+		case STOP:     return stop;
 		}
-		
+		return -1;
 	}
-	
-	
-	public void turnleft()
 
 	public void perform(CarCommand command)
-	{	
-		
-		pilot.setTravelSpeed((command.leftPower + command.rightPower)/2); // A hack to save the time necessary to refactor sharedCar
-		
-		setPilotMode(command.command);
-		
+	{
+		leftMotor.controlMotor(command.leftPower, ccToMc(command.command));
+		rightMotor.controlMotor(command.rightPower,ccToMc(command.command));
     }
 }
-

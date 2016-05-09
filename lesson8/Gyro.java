@@ -15,14 +15,15 @@ import lejos.util.Delay;
 class Gyro extends Thread
 {
     private SharedCar car;
+    private int leftRightCounter = 1;
 
     GyroSensor gyro = new GyroSensor(SensorPort.S2);
 
-    FixedQueue<Float> readings;;
+    FixedQueue<Float> readings;
 
     private float delta;
     
-	private float gyroThreshold = 70;
+	private float gyroThreshold = 60;
 
     public Gyro(SharedCar car)
     {
@@ -33,46 +34,56 @@ class Gyro extends Thread
 	public void run() 
     {
 		
+		Delay.msDelay(2000);
+		
 		while (true)
         {
 			fillQueue();
-			pauseTillDelta();
+			pauseUntilPlateau();
     
         	LCD.clear();
         	
-         	LCD.drawString("Platou", 1, 2); // We have reached a platou
-        	
+         	LCD.drawString("Plateau", 1, 2); // We have reached a platou
          	
-         	car.turnRight();
-        	
-        	
-        	Delay.msDelay(1000);
+         	if(leftRightCounter % 2 == 1) {
+         		
+         		turnRight();
+         		
+         	} else {
+         		
+         		turnLeft();
+         		
+         	}
+         	
+         	leftRightCounter++;
+         	
+         	
+        	Delay.msDelay(1550);
         	
         	reset();
         	
         }
     }
 	
-	private void leftTurn() {
+	private void turnRight() {
 		
-		
-		
-	}
+		car.forward(100, 75);
 	
-	private void rightTurn() {
-		
-		
-		
 	}
 
+	private void turnLeft() {
+		
+		car.forward(70, 100);
+
+	}
 	private void reset() {
 
 		car.noCommand();
     	delta = 0;
-    	readings = new FixedQueue<>(10);
+    	readings = new FixedQueue<>(12);
 	}
 
-	private void pauseTillDelta()
+	private void pauseUntilPlateau()
 	{
 		while ( delta < gyroThreshold )
     	{
@@ -88,7 +99,7 @@ class Gyro extends Thread
             
     		car.noCommand();
     		
-    		Delay.msDelay(50);
+    		Delay.msDelay(25);
     	}
 		
 	}
