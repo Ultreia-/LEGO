@@ -140,7 +140,7 @@ class Gyro extends Thread
 
 	private void turnLeft() {
 		
-		car.forward(60, 100);
+		car.forward(64, 100);
 
     	Delay.msDelay(1100);
     
