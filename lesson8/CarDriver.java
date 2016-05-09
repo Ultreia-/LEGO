@@ -19,7 +19,8 @@ public class CarDriver
 	// Commands for the motors
 	final int forward  = 1,
 	          backward = 2,
-	          stop     = 3;
+	          stop     = 3,
+				motorfloat = 4;
 	
     private MotorPort leftMotor = MotorPort.C;
     private MotorPort rightMotor= MotorPort.B;
@@ -35,6 +36,7 @@ public class CarDriver
 		case FORWARD:  return forward;
 		case BACKWARD: return backward;
 		case STOP:     return stop;
+		case FLOAT: return motorfloat;
 		}
 		return -1;
 	}

@@ -16,8 +16,9 @@ class Gyro extends Thread
 {
     private SharedCar car;
     private int plateuCount = 0;
-    private int[] turnCommands = {1, 0, -1, 0}; //-1: left, 0: nothing, 1: right
-
+    private int[] turnCommands = {1, -1, 180, 0}; //-1: left, 0: nothing, 1: right -180: 180 TURN
+    private long programStartTime;
+    
     GyroSensor gyro = new GyroSensor(SensorPort.S2);
 
     FixedQueue<Float> readings;
@@ -37,10 +38,12 @@ class Gyro extends Thread
 	public void run() 
     {
 		
-		Delay.msDelay(2000);
+		programStartTime = System.currentTimeMillis();
 		
 		while (true)
         {
+			Delay.msDelay(1500);
+			
 			fillQueue();
 			pauseUntilPlateau();
     
@@ -58,12 +61,16 @@ class Gyro extends Thread
 	         		case 1:
 	             		turnRight();
 	         			break;
+	         		case 180: 
+	         			turn180();
+	         			break;
+	         		case 0:
+	         			stop();
+	         			break;
 	         	}
 	         	
 	         	plateuCount++;
-	         
-	        	Delay.msDelay(1200);
-	        	
+	         	
 	        	cruise.reset();
 	        	reset();
 	        
@@ -75,17 +82,71 @@ class Gyro extends Thread
         }
     }
 	
+	
+	private void stop() { 
+		
+		turn90Degrees();    	
+    	car.forward(100,  100);
+    	
+    	Delay.msDelay(500);
+    	
+    	car.floatMotor();
+    	
+    	gyroThreshold = 200;
+    
+    	pauseUntilPlateau();
+    	
+    
+		long timestamp = System.currentTimeMillis();
+		
+		long racetime = timestamp - programStartTime;
+		
+		LCD.clear();
+		
+		LCD.drawString("TIME: " + (racetime), 0, 0);
+	
+		car.stop();
+		
+		while(true) {
+		
+			
+			
+			
+		}
+		
+	}
+
+	private void turn90Degrees() {
+
+		car.forward(100, -100);
+    	Delay.msDelay(110);
+	
+	}
+
+	private void turn180() {
+		car.forward(100, -100);
+		
+    	Delay.msDelay(360);
+	}
+
 	private void turnRight() {
 		
-		car.forward(100, 75);
+		car.forward(100, 64);
+
+    	Delay.msDelay(1025);
+    
 	
 	}
 
 	private void turnLeft() {
 		
-		car.forward(75, 100);
+		car.forward(60, 100);
+
+    	Delay.msDelay(1100);
+    
 
 	}
+	
 	private void reset() {
 
 		car.noCommand();

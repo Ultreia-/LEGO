@@ -31,6 +31,18 @@ public class SharedCar implements Car
     	carCommand.rightPower = 0;
     	commandReady = true;
     }
+    
+    
+    public void floatMotor() {
+    	
+    	carCommand.command = CarCommand.Command.FLOAT;
+    	carCommand.leftPower  = 0;
+    	carCommand.rightPower = 0;
+    	commandReady = true;
+    	
+    	
+    	
+    }
    
     public void forward(int leftPower, int rightPower)
     {
@@ -51,22 +63,6 @@ public class SharedCar implements Car
     public void noCommand()
     {
     	commandReady = false;
-    }
-    
-    public void turnRight() 
-    {	
-    	carCommand.command = carCommand.command.RIGHT;
-    	carCommand.leftPower = 100;
-    	carCommand.rightPower = 100;
-    	commandReady = true;	
-    }
-    
-    public void turnLeft() 
-    {	
-    	carCommand.command = carCommand.command.LEFT;
-    	carCommand.leftPower = 100;
-    	carCommand.rightPower = 100;
-    	commandReady = true;
     }
     
     public CarCommand getCommand()

@@ -2,6 +2,7 @@ package lesson8;
 
 
 import lejos.nxt.*;
+import lejos.util.Delay;
 
 /*
  * Behavior control network of Figure 9.9 in chapter 9 in
@@ -13,6 +14,7 @@ public class RaceCar
 {
     public static void main(String [] args)  throws Exception
     {	
+    	
     	SharedCar[] car = { new SharedCar(), new SharedCar()};
     	
     	CarDriver cd = new CarDriver();
@@ -26,7 +28,9 @@ public class RaceCar
     	//Gyro stuff   	
 
     	Button.waitForAnyPress();
-
+    	
+    	Delay.msDelay(1000);
+    	
     	Arbiter arbiter = new Arbiter(car, cd);
     	LCD.clear();
 
@@ -41,5 +45,6 @@ public class RaceCar
         {	
             LCD.drawString("Winner " + arbiter.winner(), 0, 5);
         }
+       
     }
 }

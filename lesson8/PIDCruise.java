@@ -25,7 +25,7 @@ class PIDCruise extends Thread
 	private static double kp = 0.2;
 	private static double dt = 0.0014;
 	private static double ki = (kp * 0.5 * dt)/pc;
-	private static double kd = 12; //(kp*pc)/(8*dt);
+	private static double kd = 2; //(kp*pc)/(8*dt);
     private static int power = 100;
     private static int sampleInterval = 10;
     
