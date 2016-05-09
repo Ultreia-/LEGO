@@ -1,5 +1,6 @@
 package lesson8;
 
+import lejos.robotics.navigation.DifferentialPilot;
 
 /**
  * A locomotion module with methods to drive
@@ -11,6 +12,7 @@ package lesson8;
  * @author  Ole Caprani
  * @version 26.3.14
  */
+
 public class SharedCar implements Car 
 {    
     private boolean commandReady;
@@ -51,6 +53,22 @@ public class SharedCar implements Car
     	commandReady = false;
     }
     
+    public void turnRight() 
+    {	
+    	carCommand.command = carCommand.command.RIGHT;
+    	carCommand.leftPower = 100;
+    	carCommand.rightPower = 100;
+    	commandReady = true;	
+    }
+    
+    public void turnLeft() 
+    {	
+    	carCommand.command = carCommand.command.LEFT;
+    	carCommand.leftPower = 100;
+    	carCommand.rightPower = 100;
+    	commandReady = true;
+    }
+    
     public CarCommand getCommand()
     {
     	CarCommand result = null;
@@ -60,4 +78,6 @@ public class SharedCar implements Car
     	}
     	return result;
     }
+    
+    
 }

@@ -29,7 +29,7 @@ public class FixedQueue<T> extends AbstractQueue<T>{
 	{
 		T element = elements.get(0);
 		elements.remove(0);
-		return (T) elements;
+		return element;
 	}
 
 	@Override
@@ -60,6 +60,6 @@ public class FixedQueue<T> extends AbstractQueue<T>{
 
 	public boolean hasReachedMaxSize()
 	{
-		return elements.size() == maxSize;
+		return elements.size() >= maxSize;
 	}
 }

@@ -17,25 +17,27 @@ public class RaceCar
     	
     	CarDriver cd = new CarDriver();
 
-    	Cruise cruise = new Cruise(car[0]);
-    	//Gyro stuff
-    	
-    	//cruise.sensor.calibrate();
-    	
+    	//Cruise cruise = new Cruise(car[0]);
+    	Gyro gyro = new Gyro(car[0]);
+    	//CruiseStraight cruise = new CruiseStraight(car[1]);
+    	PIDCruise cruise = new PIDCruise(car[1]);
+    	//Gyro stuff   	
+
     	Button.waitForAnyPress();
-    	
+
     	Arbiter arbiter = new Arbiter(car, cd);
     	LCD.clear();
-        LCD.drawString("Robot 9.9", 0, 0);
 
         arbiter.setDaemon(true);	   
         arbiter.start();
         cruise.setDaemon(true);
         cruise.start();
-	   	    
+        gyro.setDaemon(true);
+        gyro.start();
+	   	
         while (! Button.ESCAPE.isDown())
         {	
-            LCD.drawString("Winner " + arbiter.winner(), 0, 3);
+            LCD.drawString("Winner " + arbiter.winner(), 0, 5);
         }
     }
 }

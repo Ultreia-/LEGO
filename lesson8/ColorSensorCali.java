@@ -19,8 +19,9 @@ public class ColorSensorCali {
    private ColorSensor cs; 
    private int blackLightValue;
    private int whiteLightValue;
-   private int whiteGreenThreshold;
-   private int greenBlackThreshold;
+   //private int whiteGreenThreshold;
+   //private int greenBlackThreshold;
+   private int whiteBlackThreshold;
    private int greenLightValue;
 
    public ColorSensorCali(SensorPort p)
@@ -55,10 +56,12 @@ public class ColorSensorCali {
 	   whiteLightValue = read("white");
 	   greenLightValue = read("green");
 
-	   whiteGreenThreshold = (whiteLightValue+greenLightValue)/2;
-	   greenBlackThreshold = (greenLightValue+blackLightValue)/2;
+	   //whiteGreenThreshold = (whiteLightValue+greenLightValue)/2;
+	   //greenBlackThreshold = (greenLightValue+blackLightValue)/2;
+	   whiteBlackThreshold = (whiteLightValue+blackLightValue)/2;	   
    }
-   
+
+/*   
    public boolean black() {
            return (cs.getNormalizedLightValue()< greenBlackThreshold);
    }
@@ -70,9 +73,13 @@ public class ColorSensorCali {
    public boolean green() {
 	   return (cs.getNormalizedLightValue()>= greenBlackThreshold && cs.getNormalizedLightValue() <= whiteGreenThreshold);
    }
+*/
    
    public int light() {
  	   return cs.getNormalizedLightValue();
    }
    
+   public int getWhiteBlackThreshold() {
+	   return whiteBlackThreshold;
+   }
 }
