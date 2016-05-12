@@ -16,7 +16,7 @@ class Gyro extends Thread
 {
     private SharedCar car;
     private int plateuCount = 0;
-    private int[] turnCommands = {1, -1, 180, 0}; //-1: left, 0: nothing, 1: right -180: 180 TURN
+    private int[] turnCommands = {1, -1, 180, 1, -1}; //-1: left, 0: nothing, 1: right -180: 180 TURN
     private long programStartTime;
     
     GyroSensor gyro = new GyroSensor(SensorPort.S2);
@@ -142,7 +142,7 @@ class Gyro extends Thread
 		
 		car.forward(62, 100);
 
-    	Delay.msDelay(1100);
+    	Delay.msDelay(1200);
     
 
 	}
