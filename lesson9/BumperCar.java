@@ -28,6 +28,8 @@ public class BumperCar {
 		
 		LightSensor lightsensor = new LightSensor(SensorPort.S1);
 
+		TouchSensor touchsensor = new TouchSensor(SensorPort.S4);
+
 		// Calibrate
 
 		LCD.drawString("Pick White", 0, 0);
@@ -35,7 +37,7 @@ public class BumperCar {
 		int whitelight = readLight(lightsensor);
 
 		LCD.clear();
-		LCD.drawString("Pick BLack", 0, 0);
+		LCD.drawString("Pick Black", 0, 0);
 
 		int blacklight = readLight(lightsensor);
 
@@ -45,12 +47,14 @@ public class BumperCar {
 		Behavior b2 = new AvoidLine(lightsensor, whitelight, blacklight);
 		Behavior b3 = new FollowOthers(fieldwidth);
 		Behavior b4 = new Exit();
-		Behavior[] behaviorList = { b1, b2, b3, b4 };
+		Behavior b5 = new HookEnemy(touchsensor);
+		
+		Behavior[] behaviorList = { b1, b2, b3, b4, b5 };
 		Arbitrator arbitrator = new Arbitrator(behaviorList);
 		LCD.drawString("Bumper Car", 0, 1);
 
 		Button.waitForAnyPress();
-
+		
 		arbitrator.start();
 	}
 
@@ -71,8 +75,6 @@ public class BumperCar {
 	}
 
 }
-
-
 
 class DriveForward implements Behavior {
 
@@ -193,8 +195,78 @@ class FollowOthers extends Thread implements Behavior {
 
 		
 	}
+}
+
+class HookEnemy extends Thread implements Behavior {
+
+	private TouchSensor touchSensor;
+	private boolean _supressed = true;
 	
 	
+	public HookEnemy(TouchSensor touchsensor) {
+		this.touchSensor = touchsensor;
+	}
+
+
+	@Override
+	public int takeControl() {
+		if(touchSensor.isPressed()) {
+			
+			return 70;
+			
+		}
+		
+		return 0;
+	}
+	
+
+	
+	
+	@Override
+	public void action() {
+		
+		_supressed = false;
+		
+		
+		Motor.A.setSpeed(700);		
+		Motor.B.setSpeed(700);
+			
+		Motor.A.forward();
+		Motor.B.forward();
+		
+		
+		Motor.C.setSpeed(200);
+		
+		Motor.C.backward();
+		
+		
+		int count = 0;
+		while(count < 200 && !_supressed) {
+			
+			Thread.yield();
+			Delay.msDelay(1);
+			count ++;
+			
+		}
+
+			
+		Motor.C.stop();
+		
+		Motor.A.setSpeed(300);		
+		Motor.B.setSpeed(300);
+				
+	
+		
+	}
+
+	@Override
+	public void suppress() {
+		_supressed = true;
+		
+		
+
+		
+	}
 	
 	
 	
@@ -235,12 +307,23 @@ class AvoidLine extends Thread implements Behavior {
 	public void action() {
 
 		_suppressed = false;
+		
+		Motor.C.setSpeed(700);
+		Motor.C.forward();
+		
+		Delay.msDelay(100);
+		
+		
+		Motor.C.stop();
 
-		Motor.A.backward();
-		Motor.B.backward();
-
-		while (!_suppressed) {
-			Thread.yield(); // don't exit till suppressed
+		int count = 0;
+		
+		while(count < 700){
+			Motor.A.backward();
+			Motor.B.backward();
+			Delay.msDelay(1);	
+			count ++;
+			
 		}
 
 	}
