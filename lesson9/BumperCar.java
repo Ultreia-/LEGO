@@ -43,10 +43,10 @@ public class BumperCar {
 
 		LCD.clear();
 
-		Behavior b1 = new DriveForwardLejos();
+		Behavior b1 = new DriveForward();
 		Behavior b2 = new AvoidLine(lightsensor, whitelight, blacklight);
 		Behavior b3 = new FollowOthers(fieldwidth);
-		Behavior b4 = new ExitLejos();
+		Behavior b4 = new Exit();
 		Behavior b5 = new HookEnemy(touchsensor);
 		
 		Behavior[] behaviorList = { b1, b2, b3, b4, b5 };
