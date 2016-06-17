@@ -1,4 +1,6 @@
-package lesson9;
+package lesson11v2;
+
+
 
 
 /**
@@ -16,7 +18,7 @@ package lesson9;
 * these objects, create an array of them and use that array to initialize an
 * Arbitrator object.
 *
-* @see ArbitratorOrg
+* @see Arbitrator
   
 * @version 0.9  May 2011
 * Modified so takeControl returns an integer, Ole Caprani 24-12-2012

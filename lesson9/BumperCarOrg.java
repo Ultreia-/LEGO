@@ -27,13 +27,13 @@ public class BumperCarOrg
     Motor.A.setSpeed(400);
     Motor.C.setSpeed(400);
     Behavior b1 = new DriveForward();
-    Behavior b2 = new DetectWall();
+    Behavior b2 = new DetectWallOrg();
     Behavior b3 = new Exit();
     Behavior[] behaviorList =
     {
       b1, b2, b3
     };
-    Arbitrator arbitrator = new Arbitrator(behaviorList);
+    ArbitratorOrg arbitrator = new ArbitratorOrg(behaviorList);
     LCD.drawString("Bumper Car",0,1);
     Button.waitForAnyPress();
     arbitrator.start();
@@ -41,7 +41,7 @@ public class BumperCarOrg
 }
 
 
-class DriveForward implements Behavior
+class DriveForwardOrg implements Behavior
 {
 
   private boolean _suppressed = false;
@@ -73,13 +73,13 @@ class DriveForward implements Behavior
 }
 
 
-class DetectWall extends Thread implements Behavior
+class DetectWallOrg extends Thread implements Behavior
 {
   private boolean _suppressed = false;
   private boolean active = false;
   private int distance = 255;
 
-  public DetectWall()
+  public DetectWallOrg()
   {
     touch = new TouchSensor(SensorPort.S1);
     sonar = new UltrasonicSensor(SensorPort.S3);
@@ -151,7 +151,7 @@ class DetectWall extends Thread implements Behavior
   private UltrasonicSensor sonar;
 }
 
-class Exit implements Behavior
+class ExitOrg implements Behavior
 {
   private boolean _suppressed = false;
 

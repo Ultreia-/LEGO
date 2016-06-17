@@ -27,7 +27,7 @@ package lesson9;
  * Ole Caprani, 24-12-2012
  * 
  */
-public class Arbitrator
+public class ArbitratorOrg
 {
 	
     private final int NONE = -1;
@@ -36,7 +36,7 @@ public class Arbitrator
     private int currentBehavior = NONE;
     private int currentPriority = NONE;
  
-    public Arbitrator(Behavior[] behaviorList)
+    public ArbitratorOrg(Behavior[] behaviorList)
     {
         behavior = behaviorList;
         actionThread = new BehaviorAction();
