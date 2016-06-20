@@ -60,7 +60,7 @@ public class BlackWhiteSensor {
    }
    
    public boolean white() {
-	   return (ls.readValue()> blackWhiteThreshold);
+	   return (ls.readValue()>= blackWhiteThreshold);
    }
    
    public int light() {
