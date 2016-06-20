@@ -32,12 +32,14 @@ public class Calibration
    public static void main(String [] args)  
    throws Exception 
    {
-       double rightWheel = 5.44, leftWheel = 5.49, trackWidth = 16.0;
+       
        double travelSpeed = 5, rotateSpeed = 45;
        NXTRegulatedMotor left = Motor.B;
        NXTRegulatedMotor right = Motor.C;
-	   
+       
+       double rightWheel = 5.44, leftWheel = 5.49, trackWidth = 16.0;
        DifferentialPilot pilot = new DifferentialPilot(leftWheel, rightWheel, trackWidth, left, right, false);
+       
        OdometryPoseProvider poseProvider = new OdometryPoseProvider(pilot);
        Pose initialPose = new Pose(0,0,0);
        //RConsole.open();

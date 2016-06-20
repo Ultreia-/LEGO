@@ -1,4 +1,4 @@
-package lesson11v2;
+package lesson11MonteCarlo;
 
 import lejos.nxt.*;
 import lejos.robotics.localization.OdometryPoseProvider;

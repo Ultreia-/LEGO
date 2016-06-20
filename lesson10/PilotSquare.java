@@ -39,6 +39,8 @@ public class PilotSquare
        NXTRegulatedMotor right = Motor.C;
 	   
        DifferentialPilot pilot = new DifferentialPilot(leftWheel, rightWheel, trackWidth, left, right, false);
+	   
+       //double wheelDiameter = 5.5, trackWidth = 16.0;
        //DifferentialPilot pilot = new DifferentialPilot(wheelDiameter, trackWidth, left, right);
        OdometryPoseProvider poseProvider = new OdometryPoseProvider(pilot);
        Pose initialPose = new Pose(0,0,0);
