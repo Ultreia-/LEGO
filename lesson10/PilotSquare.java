@@ -32,7 +32,7 @@ public class PilotSquare
    public static void main(String [] args)  
    throws Exception 
    {
-       double rightWheel = 5.44, leftWheel = 5.49, trackWidth = 16.0;
+       double rightWheel = 5.41, leftWheel = 5.49, trackWidth = 16.0;
 	   //double wheelDiameter = 5.5, trackWidth = 16.0;
        double travelSpeed = 5, rotateSpeed = 45;
        NXTRegulatedMotor left = Motor.B;

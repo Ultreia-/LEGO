@@ -37,7 +37,7 @@ public class Calibration
        NXTRegulatedMotor left = Motor.B;
        NXTRegulatedMotor right = Motor.C;
        
-       double rightWheel = 5.44, leftWheel = 5.49, trackWidth = 16.0;
+       double rightWheel = 5.41, leftWheel = 5.49, trackWidth = 16;
        DifferentialPilot pilot = new DifferentialPilot(leftWheel, rightWheel, trackWidth, left, right, false);
        
        OdometryPoseProvider poseProvider = new OdometryPoseProvider(pilot);

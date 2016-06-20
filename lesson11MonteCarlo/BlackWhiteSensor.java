@@ -39,7 +39,7 @@ public class BlackWhiteSensor {
 	   LCD.drawString("to callibrate", 0, 1);
 	   LCD.drawString(color, 0, 2);
 	   while( !Button.ENTER.isPressed() ){
-	      lightValue = ls.readValue();
+	      lightValue = ls.readNormalizedValue();
 	      LCD.drawInt(lightValue, 4, 10, 2);
 	      LCD.refresh();
 	   }
@@ -56,15 +56,15 @@ public class BlackWhiteSensor {
    }
    
    public boolean black() {
-           return (ls.readValue()< blackWhiteThreshold);
+           return (ls.readNormalizedValue()< blackWhiteThreshold);
    }
    
    public boolean white() {
-	   return (ls.readValue()> blackWhiteThreshold);
+	   return (ls.readNormalizedValue()>= blackWhiteThreshold);
    }
    
    public int light() {
- 	   return ls.readValue();
+ 	   return ls.readNormalizedValue();
    }
    
    public int getThreshold() {
