@@ -18,12 +18,12 @@ public class BumperCar{
 		PC = new SlaveIOStreams(false);
     	PC.open();
     	
-	    double wheelDiameter = 5.5, trackWidth = 16.5;
+        double rightWheel = 5.44, leftWheel = 5.49, trackWidth = 16.0;
 	    double travelSpeed = 5, rotateSpeed = 45;
 	    NXTRegulatedMotor left = Motor.B;
 	    NXTRegulatedMotor right = Motor.C;
 	
-	    DifferentialPilot pilot = new DifferentialPilot(wheelDiameter, trackWidth, left, right);
+	    DifferentialPilot pilot = new DifferentialPilot(leftWheel, rightWheel, trackWidth, left, right, false);
 	    OdometryPoseProvider poseProvider = new OdometryPoseProvider(pilot);
 
 	       
@@ -46,7 +46,7 @@ public class BumperCar{
 			@Override
 			public void moveStopped(Move event, MoveProvider mp) {
 				//LCD.drawString("MoveType: " + event.getMoveType(), 0, 2);
-				/*
+				/* 
 				if(event.getMoveType() == Move.MoveType.ROTATE)
 					show(poseProvider.getPose());
 				*/
@@ -57,9 +57,7 @@ public class BumperCar{
 				PC.output((move.getMoveType() == Move.MoveType.TRAVEL? 0:1 ));
 				PC.output(move.getDistanceTraveled());
 				PC.output(move.getAngleTurned());
-				
-				Delay.msDelay(3000);
-				
+								
 			}
 			
 			/*private void show(Pose p)
@@ -125,11 +123,13 @@ class Wander extends Thread implements Behavior {
 				pilot.travel(Math.random()*30, true);
 			}
 			
-			while(!_suppressed && pilot.isMoving()) {
+			int currentTime = (int)System.currentTimeMillis();
+			while(!_suppressed && pilot.isMoving() && ((int)System.currentTimeMillis() > currentTime + 3000)) {
 				Thread.yield();
 			}
-			
-			pilot.rotate((Math.random()-0.5)*360);
+			if(!_suppressed) {
+				pilot.rotate((Math.random()-0.5)*360);
+			}
 
 			//show(poseProvider.getPose());
 		}
