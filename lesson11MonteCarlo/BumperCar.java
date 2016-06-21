@@ -1,5 +1,7 @@
 package lesson11MonteCarlo;
 
+import java.util.Arrays;
+
 import lejos.nxt.*;
 import lejos.robotics.localization.OdometryPoseProvider;
 import lejos.robotics.navigation.DifferentialPilot;
@@ -86,15 +88,18 @@ public class BumperCar{
 	    BlackWhiteSensor sensor = new BlackWhiteSensor(SensorPort.S1);
 		 
 	    sensor.calibrate();
+	    
+	    UltrasonicSensor ultrasonicSensor = new UltrasonicSensor(SensorPort.S2);
 		  
 	  Behavior b1 = new AvoidEdge(pilot, sensor);
 	  Behavior b2 = new Wander(pilot, poseProvider);	  
 	  Behavior b3 = new Exit();
+	  Behavior b4 = new AvoidObject(pilot, poseProvider, ultrasonicSensor);
 	  //Behavior b4 = new PilotBehavior(route, pilot);
 	  
 	  Behavior[] behaviorList =
 	  {
-	    b1,b2,b3
+	    b1,b2,b3,b4
 	  };
 	  Arbitrator arbitrator = new Arbitrator(behaviorList);
 
@@ -127,7 +132,7 @@ class Wander extends Thread implements Behavior {
 
 		while(!_suppressed){
 
-			pilot.travel(Math.random()*20, true);
+			pilot.travel(10, true);
 			
 			while(!_suppressed && pilot.isMoving()) {
 				Thread.yield();
@@ -184,7 +189,7 @@ class AvoidEdge extends Thread implements Behavior
   {
 	    if(ls.white() && edgeCount > 10 && edgeCount < 100) {
 	    	edgeCount = 0;
-	    	return 100;
+	    	return 150;
 	    }
 	  return 0;
   }
@@ -232,4 +237,92 @@ class Exit implements Behavior
   }
 }
 
+class AvoidObject implements Behavior {
+	
+	private UltrasonicSensor ultrasonicSensor;
+	private DifferentialPilot pilot;
+	private OdometryPoseProvider poseProvider;
+	private int objDistance = 20;
+	private int ortoTravelDist = 20;
+	private int travelDist = 30;
+	private int rightTurn = -90;
+	private int leftTurn = 90;
+	private boolean _suppressed = false;
 
+	public AvoidObject(DifferentialPilot pilot, OdometryPoseProvider poseProvider, UltrasonicSensor ultrasonicSensor)
+	  {
+		  this.ultrasonicSensor = ultrasonicSensor;
+		  this.pilot = pilot;
+		  this.poseProvider = poseProvider;
+	  }
+	
+
+	@Override
+	public int takeControl() {
+		int distance = readDistance();
+		
+
+		LCD.clear();
+		LCD.drawString("read: " + distance , 0, 0);
+		
+		if(distance < objDistance) {
+			
+			return 100;
+			
+		}
+		
+		return 0;
+	}
+
+	@Override
+	public void action() {
+		int currentDistance = readDistance();
+		
+		Pose initPose = poseProvider.getPose();
+		float initX = initPose.getX();
+		float initY = initPose.getY();
+		
+		while(currentDistance < objDistance){
+			pilot.rotate(leftTurn);
+			pilot.travel(ortoTravelDist);
+			pilot.rotate(rightTurn);
+			
+			currentDistance = readDistance();
+		}
+		
+		Pose newPose = poseProvider.getPose();
+		float newX = newPose.getX();
+		float newY = newPose.getY();
+		
+		pilot.travel(travelDist);
+		pilot.rotate(rightTurn);
+			
+		if(readDistance() > objDistance){
+			pilot.travel(ortoTravelDist);
+		}else{
+			pilot.rotate(leftTurn);
+		}
+		
+	}
+
+	@Override
+	public void suppress() {
+		_suppressed = true;// standard practice for suppress methods
+		
+	}
+	
+	private int readDistance() {
+		
+		int[] distances = new int[5];
+		
+        for(int i = 0;i < 5;i++) {
+        	distances[i] = ultrasonicSensor.getDistance();
+            Delay.msDelay(1);
+        }
+        
+        Arrays.sort(distances);
+        
+        return distances[2];
+		
+	}
+}
